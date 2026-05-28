@@ -9,15 +9,19 @@
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      --teal: #0F8A6B;
-      --teal-light: #E6F4F0;
-      --teal-mid: #0d7a5e;
-      --amber: #F59E0B;
-      --ink: #1a1a2e;
-      --muted: #6b7280;
-      --bg: #f9fafb;
-      --white: #ffffff;
-      --radius: 16px;
+      --primary:       #3730A3;
+      --primary-mid:   #2e2882;
+      --primary-dark:  #1E1B4B;
+      --primary-light: #EEF0FF;
+      --primary-soft:  #c7d2fe;
+      --amber:         #F59E0B;
+      --ink:           #0F172A;
+      --muted:         #64748B;
+      --hairline:      #E5E9EE;
+      --bg:            #FAFBFC;
+      --surface:       #FFFFFF;
+      --surface-var:   #F1F5F9;
+      --radius:        16px;
     }
 
     body {
@@ -29,9 +33,9 @@
 
     /* ── NAV ── */
     nav {
-      background: var(--white);
-      border-bottom: 1px solid #e5e7eb;
-      padding: 16px 24px;
+      background: var(--surface);
+      border-bottom: 1px solid var(--hairline);
+      padding: 14px 32px;
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -47,249 +51,272 @@
     }
     .nav-logo .logo-mark {
       width: 36px; height: 36px;
-      background: var(--teal);
+      background: var(--primary);
       border-radius: 10px;
       display: flex; align-items: center; justify-content: center;
       color: white; font-weight: 800; font-size: 18px;
     }
-    .nav-logo span {
-      font-size: 18px; font-weight: 700; color: var(--ink);
-    }
+    .nav-logo span { font-size: 18px; font-weight: 700; color: var(--ink); }
     .nav-links a {
       color: var(--muted);
       text-decoration: none;
       font-size: 14px;
-      margin-left: 20px;
+      margin-left: 24px;
+      transition: color 0.15s;
     }
-    .nav-links a:hover { color: var(--teal); }
+    .nav-links a:hover { color: var(--primary); }
 
     /* ── HERO ── */
     .hero {
-      background: linear-gradient(135deg, #0a6b52 0%, #0F8A6B 50%, #14a882 100%);
+      background: linear-gradient(140deg, var(--primary-dark) 0%, var(--primary) 60%, #4f46e5 100%);
       color: white;
       text-align: center;
-      padding: 72px 24px 80px;
+      padding: 80px 24px 88px;
       position: relative;
       overflow: hidden;
     }
     .hero::before {
       content: '';
       position: absolute; inset: 0;
-      background: radial-gradient(circle at 70% 30%, rgba(255,255,255,0.07) 0%, transparent 60%);
+      background: radial-gradient(ellipse at 65% 20%, rgba(165,180,252,0.18) 0%, transparent 65%);
+    }
+    .hero::after {
+      content: '';
+      position: absolute;
+      bottom: -2px; left: 0; right: 0;
+      height: 48px;
+      background: var(--bg);
+      clip-path: ellipse(55% 100% at 50% 100%);
     }
     .hero-badge {
       display: inline-block;
-      background: rgba(255,255,255,0.15);
-      border: 1px solid rgba(255,255,255,0.3);
+      background: rgba(165,180,252,0.2);
+      border: 1px solid rgba(165,180,252,0.4);
       border-radius: 999px;
-      padding: 6px 16px;
+      padding: 6px 18px;
       font-size: 13px;
       font-weight: 600;
-      letter-spacing: 0.5px;
-      margin-bottom: 20px;
+      letter-spacing: 0.4px;
+      margin-bottom: 22px;
+      color: #c7d2fe;
     }
     .hero h1 {
-      font-size: clamp(32px, 5vw, 52px);
+      font-size: clamp(34px, 5.5vw, 56px);
       font-weight: 800;
-      line-height: 1.15;
-      max-width: 680px;
-      margin: 0 auto 20px;
+      line-height: 1.12;
+      max-width: 700px;
+      margin: 0 auto 22px;
     }
     .hero h1 span { color: #fcd34d; }
     .hero p {
       font-size: clamp(16px, 2vw, 19px);
-      opacity: 0.88;
-      max-width: 520px;
-      margin: 0 auto 36px;
+      color: rgba(255,255,255,0.82);
+      max-width: 500px;
+      margin: 0 auto 40px;
+      line-height: 1.7;
     }
     .hero-cta {
       display: inline-flex;
       align-items: center;
       gap: 10px;
       background: white;
-      color: var(--teal);
+      color: var(--primary);
       font-weight: 700;
       font-size: 15px;
-      padding: 14px 28px;
+      padding: 14px 30px;
       border-radius: 14px;
       text-decoration: none;
-      box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+      box-shadow: 0 8px 32px rgba(0,0,0,0.25);
       transition: transform 0.2s, box-shadow 0.2s;
     }
-    .hero-cta:hover { transform: translateY(-2px); box-shadow: 0 8px 28px rgba(0,0,0,0.25); }
-    .play-icon { width: 22px; }
+    .hero-cta:hover { transform: translateY(-2px); box-shadow: 0 12px 36px rgba(0,0,0,0.3); }
+    .play-icon { width: 20px; }
 
     /* ── SCREENSHOTS ── */
     .screenshots {
       display: flex;
       justify-content: center;
-      gap: 28px;
-      padding: 56px 24px;
+      gap: 32px;
+      padding: 60px 24px 56px;
       flex-wrap: wrap;
-      background: var(--white);
+      background: var(--bg);
     }
-    .screenshot-card {
-      text-align: center;
-    }
+    .screenshot-card { text-align: center; }
     .screenshot-card img {
       width: 220px;
       border-radius: 32px;
-      box-shadow: 0 16px 48px rgba(0,0,0,0.14);
+      box-shadow: 0 20px 56px rgba(55,48,163,0.18);
       display: block;
+      border: 1px solid var(--hairline);
     }
     .screenshot-card p {
       margin-top: 14px;
-      font-size: 13px;
-      font-weight: 600;
-      color: var(--muted);
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--primary);
       text-transform: uppercase;
-      letter-spacing: 0.6px;
+      letter-spacing: 0.8px;
     }
 
     /* ── SECTION WRAPPER ── */
-    section { padding: 64px 24px; }
+    section { padding: 68px 24px; }
     .section-inner { max-width: 960px; margin: 0 auto; }
     .section-label {
       font-size: 12px;
       font-weight: 700;
       text-transform: uppercase;
-      letter-spacing: 1px;
-      color: var(--teal);
+      letter-spacing: 1.2px;
+      color: var(--primary);
       margin-bottom: 10px;
     }
     .section-title {
       font-size: clamp(24px, 3.5vw, 36px);
       font-weight: 800;
       line-height: 1.2;
-      margin-bottom: 16px;
+      margin-bottom: 14px;
+      color: var(--ink);
     }
     .section-sub {
       font-size: 16px;
       color: var(--muted);
       max-width: 560px;
-      line-height: 1.7;
+      line-height: 1.75;
     }
 
     /* ── USE CASES ── */
-    .usecases { background: var(--bg); }
+    .usecases { background: var(--surface); }
     .cards-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-      gap: 20px;
+      gap: 16px;
       margin-top: 40px;
     }
     .card {
-      background: var(--white);
+      background: var(--bg);
       border-radius: var(--radius);
       padding: 24px;
-      border: 1px solid #e5e7eb;
-      transition: box-shadow 0.2s;
+      border: 1px solid var(--hairline);
+      transition: box-shadow 0.2s, border-color 0.2s;
     }
-    .card:hover { box-shadow: 0 8px 24px rgba(0,0,0,0.07); }
-    .card-icon {
-      font-size: 32px;
-      margin-bottom: 14px;
+    .card:hover {
+      box-shadow: 0 8px 24px rgba(55,48,163,0.08);
+      border-color: var(--primary-soft);
     }
-    .card h3 {
-      font-size: 16px;
-      font-weight: 700;
-      margin-bottom: 8px;
-    }
-    .card p {
-      font-size: 14px;
-      color: var(--muted);
-      line-height: 1.6;
-    }
+    .card-icon { font-size: 30px; margin-bottom: 14px; }
+    .card h3 { font-size: 15px; font-weight: 700; margin-bottom: 8px; color: var(--ink); }
+    .card p { font-size: 13px; color: var(--muted); line-height: 1.65; }
 
     /* ── HOW IT WORKS ── */
-    .how { background: var(--white); }
+    .how { background: var(--primary-light); }
+    .method-label {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--primary);
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
     .steps {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      gap: 24px;
-      margin-top: 40px;
+      gap: 20px;
       counter-reset: steps;
     }
     .step {
       position: relative;
-      padding: 28px 24px 24px;
-      background: var(--bg);
+      padding: 28px 20px 22px;
+      background: var(--surface);
       border-radius: var(--radius);
+      border: 1px solid var(--hairline);
       counter-increment: steps;
     }
     .step::before {
       content: counter(steps);
       position: absolute;
-      top: -14px; left: 24px;
-      background: var(--teal);
+      top: -13px; left: 20px;
+      background: var(--primary);
       color: white;
-      width: 28px; height: 28px;
+      width: 26px; height: 26px;
       border-radius: 50%;
       display: flex; align-items: center; justify-content: center;
-      font-size: 13px; font-weight: 800;
+      font-size: 12px; font-weight: 800;
     }
-    .step h4 { font-size: 15px; font-weight: 700; margin-bottom: 8px; }
+    .step h4 { font-size: 14px; font-weight: 700; margin-bottom: 7px; color: var(--ink); }
     .step p { font-size: 13px; color: var(--muted); line-height: 1.6; }
 
     /* ── FEATURES ── */
-    .features { background: var(--bg); }
+    .features { background: var(--surface); }
     .features-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 16px;
+      gap: 14px;
       margin-top: 40px;
     }
     .feature-row {
       display: flex;
       gap: 14px;
       align-items: flex-start;
-      background: var(--white);
+      background: var(--bg);
       border-radius: 14px;
       padding: 18px 20px;
-      border: 1px solid #e5e7eb;
+      border: 1px solid var(--hairline);
+      transition: border-color 0.2s;
     }
-    .feature-row .fi { font-size: 22px; flex-shrink: 0; margin-top: 2px; }
-    .feature-row h4 { font-size: 14px; font-weight: 700; margin-bottom: 4px; }
+    .feature-row:hover { border-color: var(--primary-soft); }
+    .feature-row .fi { font-size: 21px; flex-shrink: 0; margin-top: 1px; }
+    .feature-row h4 { font-size: 14px; font-weight: 700; margin-bottom: 4px; color: var(--ink); }
     .feature-row p { font-size: 13px; color: var(--muted); line-height: 1.5; }
 
     /* ── PRIVACY ── */
     .privacy {
-      background: linear-gradient(135deg, #0a6b52, #0F8A6B);
+      background: linear-gradient(140deg, var(--primary-dark) 0%, var(--primary) 100%);
       color: white;
       text-align: center;
     }
     .privacy .section-title { color: white; }
-    .privacy .section-sub { color: rgba(255,255,255,0.82); max-width: 540px; margin: 0 auto 32px; }
+    .privacy .section-sub {
+      color: rgba(255,255,255,0.78);
+      max-width: 520px;
+      margin: 0 auto 32px;
+    }
     .privacy-pills {
       display: flex;
       flex-wrap: wrap;
-      gap: 12px;
+      gap: 10px;
       justify-content: center;
     }
     .pill {
-      background: rgba(255,255,255,0.15);
-      border: 1px solid rgba(255,255,255,0.25);
+      background: rgba(165,180,252,0.18);
+      border: 1px solid rgba(165,180,252,0.35);
       border-radius: 999px;
       padding: 8px 18px;
       font-size: 13px;
       font-weight: 600;
+      color: #e0e7ff;
     }
 
     /* ── FOOTER ── */
     footer {
-      background: var(--ink);
-      color: rgba(255,255,255,0.6);
+      background: var(--primary-dark);
+      color: rgba(255,255,255,0.55);
       text-align: center;
-      padding: 32px 24px;
+      padding: 36px 24px;
       font-size: 13px;
     }
-    footer a { color: rgba(255,255,255,0.75); text-decoration: none; margin: 0 10px; }
+    footer a {
+      color: rgba(255,255,255,0.7);
+      text-decoration: none;
+      margin: 0 10px;
+      transition: color 0.15s;
+    }
     footer a:hover { color: white; }
-    footer .footer-logo { font-size: 18px; font-weight: 800; color: white; margin-bottom: 12px; }
+    .footer-logo { font-size: 18px; font-weight: 800; color: white; margin-bottom: 10px; }
 
     @media (max-width: 600px) {
       .nav-links { display: none; }
-      .screenshot-card img { width: 160px; }
+      .screenshot-card img { width: 155px; border-radius: 24px; }
+      nav { padding: 14px 20px; }
     }
   </style>
 </head>
@@ -327,7 +354,7 @@
   </div>
   <div class="screenshot-card">
     <img src="screenshot-brief.png.png" alt="ChatBrief Brief tab showing extracted events and action items" />
-    <p>Extracted events & tasks</p>
+    <p>Extracted events &amp; tasks</p>
   </div>
 </div>
 
@@ -337,7 +364,6 @@
     <div class="section-label">Who is it for</div>
     <h2 class="section-title">Every busy group chat has a home here</h2>
     <p class="section-sub">WhatsApp group overload is universal. ChatBrief works for anyone drowning in notifications.</p>
-
     <div class="cards-grid">
       <div class="card">
         <div class="card-icon">🏢</div>
@@ -347,7 +373,7 @@
       <div class="card">
         <div class="card-icon">🏘️</div>
         <h3>Housing Societies</h3>
-        <p>Never miss maintenance notices, society meeting dates, or important announcements from your apartment group.</p>
+        <p>Never miss maintenance notices, meeting dates, or important announcements from your apartment group.</p>
       </div>
       <div class="card">
         <div class="card-icon">👨‍👩‍👧</div>
@@ -380,8 +406,8 @@
     <h2 class="section-title">Two ways to add a group. Zero hassle.</h2>
     <p class="section-sub">Import a past chat export, or let ChatBrief auto-detect your active groups from notifications.</p>
 
-    <div style="margin-top:40px;">
-      <h3 style="font-size:15px; font-weight:700; color:var(--teal); margin-bottom:20px;">📂 Method 1 — Manual Import</h3>
+    <div style="margin-top:44px;">
+      <div class="method-label">📂 Method 1 — Manual Import</div>
       <div class="steps">
         <div class="step">
           <h4>Open WhatsApp</h4>
@@ -389,7 +415,7 @@
         </div>
         <div class="step">
           <h4>Share to ChatBrief</h4>
-          <p>Choose "Without Media" then select ChatBrief from the share sheet. The file opens instantly.</p>
+          <p>Choose "Without Media" then select ChatBrief from the share sheet.</p>
         </div>
         <div class="step">
           <h4>Name your group</h4>
@@ -403,7 +429,7 @@
     </div>
 
     <div style="margin-top:48px;">
-      <h3 style="font-size:15px; font-weight:700; color:var(--teal); margin-bottom:20px;">🔔 Method 2 — Auto-Detect via Notifications</h3>
+      <div class="method-label">🔔 Method 2 — Auto-Detect via Notifications</div>
       <div class="steps">
         <div class="step">
           <h4>Grant access once</h4>
@@ -411,15 +437,15 @@
         </div>
         <div class="step">
           <h4>ChatBrief watches quietly</h4>
-          <p>In the background, ChatBrief spots active WhatsApp groups from your incoming notifications.</p>
+          <p>In the background, ChatBrief spots active WhatsApp groups from incoming notifications.</p>
         </div>
         <div class="step">
           <h4>Get notified</h4>
-          <p>When a new group is detected, you get a push notification: "New group found: Family Group".</p>
+          <p>When a new group is detected, you get a push: "New group found: Family Group".</p>
         </div>
         <div class="step">
           <h4>Add in one tap</h4>
-          <p>Open the detected groups list, select the ones you want, tap Add — messages already captured.</p>
+          <p>Open the detected groups list, select what you want, tap Add — messages already captured.</p>
         </div>
       </div>
     </div>
@@ -431,63 +457,38 @@
   <div class="section-inner">
     <div class="section-label">Features</div>
     <h2 class="section-title">Everything you need, nothing you don't</h2>
-
     <div class="features-grid">
       <div class="feature-row">
         <div class="fi">✅</div>
-        <div>
-          <h4>Action Items</h4>
-          <p>Tasks and follow-ups are pulled out and listed clearly so nothing falls through the cracks.</p>
-        </div>
+        <div><h4>Action Items</h4><p>Tasks and follow-ups pulled out clearly so nothing falls through the cracks.</p></div>
       </div>
       <div class="feature-row">
         <div class="fi">📅</div>
-        <div>
-          <h4>Event Extraction</h4>
-          <p>Dates, venues, and meetings are extracted and shown in a calendar view automatically.</p>
-        </div>
+        <div><h4>Event Extraction</h4><p>Dates, venues, and meetings shown in a calendar view automatically.</p></div>
       </div>
       <div class="feature-row">
         <div class="fi">📢</div>
-        <div>
-          <h4>Announcements</h4>
-          <p>Important group updates are highlighted separately from casual conversation.</p>
-        </div>
+        <div><h4>Announcements</h4><p>Important group updates highlighted separately from casual conversation.</p></div>
       </div>
       <div class="feature-row">
         <div class="fi">🌍</div>
-        <div>
-          <h4>Multilingual Support</h4>
-          <p>Works with chats in English, Hindi, Tamil, Telugu, Kannada, and Marathi.</p>
-        </div>
+        <div><h4>Multilingual Support</h4><p>Works with chats in English, Hindi, Tamil, Telugu, Kannada, and Marathi.</p></div>
       </div>
       <div class="feature-row">
         <div class="fi">🔒</div>
-        <div>
-          <h4>Encrypted Local Storage</h4>
-          <p>All your chat data is stored encrypted on your device using SQLCipher.</p>
-        </div>
+        <div><h4>Encrypted Local Storage</h4><p>All chat data stored encrypted on your device using SQLCipher.</p></div>
       </div>
       <div class="feature-row">
         <div class="fi">⏰</div>
-        <div>
-          <h4>Daily 8 AM Digest</h4>
-          <p>Opt in to a morning notification that summarises all your groups before your day starts.</p>
-        </div>
+        <div><h4>Daily 8 AM Digest</h4><p>Morning notification summarising all your groups before your day starts.</p></div>
       </div>
       <div class="feature-row">
         <div class="fi">🤖</div>
-        <div>
-          <h4>Your Own AI Key</h4>
-          <p>Use Google Gemini or Claude with your own API key — your chats never touch our servers.</p>
-        </div>
+        <div><h4>Your Own AI Key</h4><p>Use Google Gemini or Claude with your own key — chats never touch our servers.</p></div>
       </div>
       <div class="feature-row">
         <div class="fi">🔍</div>
-        <div>
-          <h4>Smart Filters</h4>
-          <p>Filter by date range or specific sender before summarizing to get exactly what you need.</p>
-        </div>
+        <div><h4>Smart Filters</h4><p>Filter by date range or specific sender before summarizing.</p></div>
       </div>
     </div>
   </div>
@@ -508,7 +509,7 @@
     <div style="margin-top:32px;">
       <a href="https://bull1210.github.io/chatbrief-privacy/privacy-policy.html"
          target="_blank"
-         style="color:white; font-weight:700; font-size:14px; border-bottom:2px solid rgba(255,255,255,0.4); text-decoration:none; padding-bottom:2px;">
+         style="color:#c7d2fe; font-weight:700; font-size:14px; text-decoration:underline; text-underline-offset:3px;">
         Read our full Privacy Policy →
       </a>
     </div>
@@ -524,7 +525,7 @@
     <a href="mailto:muthukannan12@gmail.com">Support</a>
     <a href="https://play.google.com/store/apps/details?id=com.chatbrief.app" target="_blank">Google Play</a>
   </div>
-  <p style="margin-top:20px; font-size:12px; opacity:0.5;">© 2026 ChatBrief. All rights reserved.</p>
+  <p style="margin-top:20px; font-size:12px; opacity:0.4;">© 2026 ChatBrief. All rights reserved.</p>
 </footer>
 
 </body>
