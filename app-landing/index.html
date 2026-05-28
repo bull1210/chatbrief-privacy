@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ChatBrief – WhatsApp Group Digest App</title>
+  <meta name="description" content="ChatBrief turns overwhelming WhatsApp group chats into a clean daily digest. Never miss what matters again." />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --teal: #0F8A6B;
+      --teal-light: #E6F4F0;
+      --teal-mid: #0d7a5e;
+      --amber: #F59E0B;
+      --ink: #1a1a2e;
+      --muted: #6b7280;
+      --bg: #f9fafb;
+      --white: #ffffff;
+      --radius: 16px;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: var(--bg);
+      color: var(--ink);
+      line-height: 1.6;
+    }
+
+    /* ── NAV ── */
+    nav {
+      background: var(--white);
+      border-bottom: 1px solid #e5e7eb;
+      padding: 16px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+    }
+    .nav-logo .logo-mark {
+      width: 36px; height: 36px;
+      background: var(--teal);
+      border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      color: white; font-weight: 800; font-size: 18px;
+    }
+    .nav-logo span {
+      font-size: 18px; font-weight: 700; color: var(--ink);
+    }
+    .nav-links a {
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 14px;
+      margin-left: 20px;
+    }
+    .nav-links a:hover { color: var(--teal); }
+
+    /* ── HERO ── */
+    .hero {
+      background: linear-gradient(135deg, #0a6b52 0%, #0F8A6B 50%, #14a882 100%);
+      color: white;
+      text-align: center;
+      padding: 72px 24px 80px;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: radial-gradient(circle at 70% 30%, rgba(255,255,255,0.07) 0%, transparent 60%);
+    }
+    .hero-badge {
+      display: inline-block;
+      background: rgba(255,255,255,0.15);
+      border: 1px solid rgba(255,255,255,0.3);
+      border-radius: 999px;
+      padding: 6px 16px;
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      margin-bottom: 20px;
+    }
+    .hero h1 {
+      font-size: clamp(32px, 5vw, 52px);
+      font-weight: 800;
+      line-height: 1.15;
+      max-width: 680px;
+      margin: 0 auto 20px;
+    }
+    .hero h1 span { color: #fcd34d; }
+    .hero p {
+      font-size: clamp(16px, 2vw, 19px);
+      opacity: 0.88;
+      max-width: 520px;
+      margin: 0 auto 36px;
+    }
+    .hero-cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: white;
+      color: var(--teal);
+      font-weight: 700;
+      font-size: 15px;
+      padding: 14px 28px;
+      border-radius: 14px;
+      text-decoration: none;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .hero-cta:hover { transform: translateY(-2px); box-shadow: 0 8px 28px rgba(0,0,0,0.25); }
+    .play-icon { width: 22px; }
+
+    /* ── SCREENSHOTS ── */
+    .screenshots {
+      display: flex;
+      justify-content: center;
+      gap: 28px;
+      padding: 56px 24px;
+      flex-wrap: wrap;
+      background: var(--white);
+    }
+    .screenshot-card {
+      text-align: center;
+    }
+    .screenshot-card img {
+      width: 220px;
+      border-radius: 32px;
+      box-shadow: 0 16px 48px rgba(0,0,0,0.14);
+      display: block;
+    }
+    .screenshot-card p {
+      margin-top: 14px;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.6px;
+    }
+
+    /* ── SECTION WRAPPER ── */
+    section { padding: 64px 24px; }
+    .section-inner { max-width: 960px; margin: 0 auto; }
+    .section-label {
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--teal);
+      margin-bottom: 10px;
+    }
+    .section-title {
+      font-size: clamp(24px, 3.5vw, 36px);
+      font-weight: 800;
+      line-height: 1.2;
+      margin-bottom: 16px;
+    }
+    .section-sub {
+      font-size: 16px;
+      color: var(--muted);
+      max-width: 560px;
+      line-height: 1.7;
+    }
+
+    /* ── USE CASES ── */
+    .usecases { background: var(--bg); }
+    .cards-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 20px;
+      margin-top: 40px;
+    }
+    .card {
+      background: var(--white);
+      border-radius: var(--radius);
+      padding: 24px;
+      border: 1px solid #e5e7eb;
+      transition: box-shadow 0.2s;
+    }
+    .card:hover { box-shadow: 0 8px 24px rgba(0,0,0,0.07); }
+    .card-icon {
+      font-size: 32px;
+      margin-bottom: 14px;
+    }
+    .card h3 {
+      font-size: 16px;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+    .card p {
+      font-size: 14px;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    /* ── HOW IT WORKS ── */
+    .how { background: var(--white); }
+    .steps {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 24px;
+      margin-top: 40px;
+      counter-reset: steps;
+    }
+    .step {
+      position: relative;
+      padding: 28px 24px 24px;
+      background: var(--bg);
+      border-radius: var(--radius);
+      counter-increment: steps;
+    }
+    .step::before {
+      content: counter(steps);
+      position: absolute;
+      top: -14px; left: 24px;
+      background: var(--teal);
+      color: white;
+      width: 28px; height: 28px;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 13px; font-weight: 800;
+    }
+    .step h4 { font-size: 15px; font-weight: 700; margin-bottom: 8px; }
+    .step p { font-size: 13px; color: var(--muted); line-height: 1.6; }
+
+    /* ── FEATURES ── */
+    .features { background: var(--bg); }
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 16px;
+      margin-top: 40px;
+    }
+    .feature-row {
+      display: flex;
+      gap: 14px;
+      align-items: flex-start;
+      background: var(--white);
+      border-radius: 14px;
+      padding: 18px 20px;
+      border: 1px solid #e5e7eb;
+    }
+    .feature-row .fi { font-size: 22px; flex-shrink: 0; margin-top: 2px; }
+    .feature-row h4 { font-size: 14px; font-weight: 700; margin-bottom: 4px; }
+    .feature-row p { font-size: 13px; color: var(--muted); line-height: 1.5; }
+
+    /* ── PRIVACY ── */
+    .privacy {
+      background: linear-gradient(135deg, #0a6b52, #0F8A6B);
+      color: white;
+      text-align: center;
+    }
+    .privacy .section-title { color: white; }
+    .privacy .section-sub { color: rgba(255,255,255,0.82); max-width: 540px; margin: 0 auto 32px; }
+    .privacy-pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      justify-content: center;
+    }
+    .pill {
+      background: rgba(255,255,255,0.15);
+      border: 1px solid rgba(255,255,255,0.25);
+      border-radius: 999px;
+      padding: 8px 18px;
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--ink);
+      color: rgba(255,255,255,0.6);
+      text-align: center;
+      padding: 32px 24px;
+      font-size: 13px;
+    }
+    footer a { color: rgba(255,255,255,0.75); text-decoration: none; margin: 0 10px; }
+    footer a:hover { color: white; }
+    footer .footer-logo { font-size: 18px; font-weight: 800; color: white; margin-bottom: 12px; }
+
+    @media (max-width: 600px) {
+      .nav-links { display: none; }
+      .screenshot-card img { width: 160px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a class="nav-logo" href="#">
+    <div class="logo-mark">C</div>
+    <span>ChatBrief</span>
+  </a>
+  <div class="nav-links">
+    <a href="#how-it-works">How it works</a>
+    <a href="#features">Features</a>
+    <a href="https://bull1210.github.io/chatbrief-privacy/privacy-policy.html" target="_blank">Privacy Policy</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-badge">AI-powered WhatsApp digest</div>
+  <h1>Stop scrolling.<br><span>Start knowing.</span></h1>
+  <p>ChatBrief turns your chaotic WhatsApp groups into a clean daily digest — action items, events, and announcements in seconds.</p>
+  <a class="hero-cta" href="https://play.google.com/store/apps/details?id=com.chatbrief.app" target="_blank">
+    <svg class="play-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M3 20.5v-17c0-.83 1-.83 1.5-.5l14 8.5c.5.3.5 1.2 0 1.5l-14 8.5c-.5.3-1.5.3-1.5-.5z"/></svg>
+    Get it on Google Play
+  </a>
+</div>
+
+<!-- SCREENSHOTS -->
+<div class="screenshots">
+  <div class="screenshot-card">
+    <img src="screenshot-home.png" alt="ChatBrief Home screen showing your WhatsApp groups" />
+    <p>Your groups at a glance</p>
+  </div>
+  <div class="screenshot-card">
+    <img src="screenshot-brief.png" alt="ChatBrief Brief tab showing extracted events and action items" />
+    <p>Extracted events & tasks</p>
+  </div>
+</div>
+
+<!-- USE CASES -->
+<section class="usecases" id="usecases">
+  <div class="section-inner">
+    <div class="section-label">Who is it for</div>
+    <h2 class="section-title">Every busy group chat has a home here</h2>
+    <p class="section-sub">WhatsApp group overload is universal. ChatBrief works for anyone drowning in notifications.</p>
+
+    <div class="cards-grid">
+      <div class="card">
+        <div class="card-icon">🏢</div>
+        <h3>Work Teams</h3>
+        <p>Catch up on project updates, decisions, and action items from your team group without reading 200 messages.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">🏘️</div>
+        <h3>Housing Societies</h3>
+        <p>Never miss maintenance notices, society meeting dates, or important announcements from your apartment group.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">👨‍👩‍👧</div>
+        <h3>School & Parent Groups</h3>
+        <p>Stay on top of homework reminders, event dates, and school circulars without the noise.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">🕌</div>
+        <h3>Community & Religious Groups</h3>
+        <p>Track upcoming events, programmes, and announcements from your community or temple group.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">🎯</div>
+        <h3>Hobby & Interest Clubs</h3>
+        <p>Know when the next meetup is and what was decided, even if you were busy when the messages flew by.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">🤝</div>
+        <h3>Volunteer & NGO Groups</h3>
+        <p>Coordinate tasks and events across your team without losing track of who agreed to do what.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section class="how" id="how-it-works">
+  <div class="section-inner">
+    <div class="section-label">How it works</div>
+    <h2 class="section-title">Two ways to add a group. Zero hassle.</h2>
+    <p class="section-sub">Import a past chat export, or let ChatBrief auto-detect your active groups from notifications.</p>
+
+    <div style="margin-top:40px;">
+      <h3 style="font-size:15px; font-weight:700; color:var(--teal); margin-bottom:20px;">📂 Method 1 — Manual Import</h3>
+      <div class="steps">
+        <div class="step">
+          <h4>Open WhatsApp</h4>
+          <p>Go to any group chat → tap the three dots → More → Export Chat.</p>
+        </div>
+        <div class="step">
+          <h4>Share to ChatBrief</h4>
+          <p>Choose "Without Media" then select ChatBrief from the share sheet. The file opens instantly.</p>
+        </div>
+        <div class="step">
+          <h4>Name your group</h4>
+          <p>Give the group a name and colour. ChatBrief imports all messages automatically.</p>
+        </div>
+        <div class="step">
+          <h4>Tap Summarize</h4>
+          <p>Select a date range, tap Summarize, and get a structured digest in seconds.</p>
+        </div>
+      </div>
+    </div>
+
+    <div style="margin-top:48px;">
+      <h3 style="font-size:15px; font-weight:700; color:var(--teal); margin-bottom:20px;">🔔 Method 2 — Auto-Detect via Notifications</h3>
+      <div class="steps">
+        <div class="step">
+          <h4>Grant access once</h4>
+          <p>Enable Notification Access for ChatBrief in Settings → Special App Access.</p>
+        </div>
+        <div class="step">
+          <h4>ChatBrief watches quietly</h4>
+          <p>In the background, ChatBrief spots active WhatsApp groups from your incoming notifications.</p>
+        </div>
+        <div class="step">
+          <h4>Get notified</h4>
+          <p>When a new group is detected, you get a push notification: "New group found: Family Group".</p>
+        </div>
+        <div class="step">
+          <h4>Add in one tap</h4>
+          <p>Open the detected groups list, select the ones you want, tap Add — messages already captured.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURES -->
+<section class="features" id="features">
+  <div class="section-inner">
+    <div class="section-label">Features</div>
+    <h2 class="section-title">Everything you need, nothing you don't</h2>
+
+    <div class="features-grid">
+      <div class="feature-row">
+        <div class="fi">✅</div>
+        <div>
+          <h4>Action Items</h4>
+          <p>Tasks and follow-ups are pulled out and listed clearly so nothing falls through the cracks.</p>
+        </div>
+      </div>
+      <div class="feature-row">
+        <div class="fi">📅</div>
+        <div>
+          <h4>Event Extraction</h4>
+          <p>Dates, venues, and meetings are extracted and shown in a calendar view automatically.</p>
+        </div>
+      </div>
+      <div class="feature-row">
+        <div class="fi">📢</div>
+        <div>
+          <h4>Announcements</h4>
+          <p>Important group updates are highlighted separately from casual conversation.</p>
+        </div>
+      </div>
+      <div class="feature-row">
+        <div class="fi">🌍</div>
+        <div>
+          <h4>Multilingual Support</h4>
+          <p>Works with chats in English, Hindi, Tamil, Telugu, Kannada, and Marathi.</p>
+        </div>
+      </div>
+      <div class="feature-row">
+        <div class="fi">🔒</div>
+        <div>
+          <h4>Encrypted Local Storage</h4>
+          <p>All your chat data is stored encrypted on your device using SQLCipher.</p>
+        </div>
+      </div>
+      <div class="feature-row">
+        <div class="fi">⏰</div>
+        <div>
+          <h4>Daily 8 AM Digest</h4>
+          <p>Opt in to a morning notification that summarises all your groups before your day starts.</p>
+        </div>
+      </div>
+      <div class="feature-row">
+        <div class="fi">🤖</div>
+        <div>
+          <h4>Your Own AI Key</h4>
+          <p>Use Google Gemini or Claude with your own API key — your chats never touch our servers.</p>
+        </div>
+      </div>
+      <div class="feature-row">
+        <div class="fi">🔍</div>
+        <div>
+          <h4>Smart Filters</h4>
+          <p>Filter by date range or specific sender before summarizing to get exactly what you need.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PRIVACY -->
+<section class="privacy">
+  <div class="section-inner">
+    <h2 class="section-title">Privacy-first by design</h2>
+    <p class="section-sub">Your chat data never leaves your device unless you choose to send it to your own AI provider. We have no servers processing your messages.</p>
+    <div class="privacy-pills">
+      <div class="pill">No chat data on our servers</div>
+      <div class="pill">Encrypted local storage</div>
+      <div class="pill">Your own AI API key</div>
+      <div class="pill">No ads, no tracking</div>
+      <div class="pill">On-device processing option</div>
+    </div>
+    <div style="margin-top:32px;">
+      <a href="https://bull1210.github.io/chatbrief-privacy/privacy-policy.html"
+         target="_blank"
+         style="color:white; font-weight:700; font-size:14px; border-bottom:2px solid rgba(255,255,255,0.4); text-decoration:none; padding-bottom:2px;">
+        Read our full Privacy Policy →
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">ChatBrief</div>
+  <p style="margin-bottom:12px;">Summarize what matters. Ignore the rest.</p>
+  <div>
+    <a href="https://bull1210.github.io/chatbrief-privacy/privacy-policy.html" target="_blank">Privacy Policy</a>
+    <a href="mailto:muthukannan12@gmail.com">Support</a>
+    <a href="https://play.google.com/store/apps/details?id=com.chatbrief.app" target="_blank">Google Play</a>
+  </div>
+  <p style="margin-top:20px; font-size:12px; opacity:0.5;">© 2026 ChatBrief. All rights reserved.</p>
+</footer>
+
+</body>
+</html>
