@@ -51,10 +51,8 @@
     }
     .nav-logo .logo-mark {
       width: 36px; height: 36px;
-      background: var(--primary);
       border-radius: 10px;
-      display: flex; align-items: center; justify-content: center;
-      color: white; font-weight: 800; font-size: 18px;
+      object-fit: contain;
     }
     .nav-logo span { font-size: 18px; font-weight: 700; color: var(--ink); }
     .nav-links a {
@@ -325,7 +323,7 @@
 <!-- NAV -->
 <nav>
   <a class="nav-logo" href="#">
-    <div class="logo-mark">C</div>
+    <img class="logo-mark" src="logo.jpg" alt="ChatBrief" />
     <span>ChatBrief</span>
   </a>
   <div class="nav-links">
