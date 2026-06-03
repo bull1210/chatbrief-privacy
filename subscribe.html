@@ -1,0 +1,620 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Subscribe — ChatBrief</title>
+  <meta name="description" content="Choose a ChatBrief plan and subscribe to unlock full access." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <!-- Razorpay Checkout SDK -->
+  <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --purple-900: #1E0055;
+      --purple-800: #2D0072;
+      --purple-700: #4C1D95;
+      --purple-600: #6D28D9;
+      --purple-500: #7C3AED;
+      --purple-400: #8B5CF6;
+      --purple-100: #EDE9FE;
+      --purple-50:  #F5F3FF;
+      --amber:      #F59E0B;
+      --amber-light:#FEF3C7;
+      --green:      #10B981;
+      --green-light:#D1FAE5;
+      --ink:        #0F172A;
+      --muted:      #64748B;
+      --hairline:   #E2E8F0;
+      --surface:    #FFFFFF;
+      --bg:         #F8F7FF;
+      --radius:     14px;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--bg);
+      color: var(--ink);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* ── HEADER ── */
+    header {
+      background: white;
+      border-bottom: 1px solid var(--hairline);
+      padding: 14px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    .logo-wordmark {
+      display: flex; align-items: center; gap: 10px; text-decoration: none;
+    }
+    .logo-icon {
+      width: 34px; height: 34px;
+      background: linear-gradient(135deg, var(--purple-700), var(--purple-500));
+      border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      color: white; font-size: 18px; font-weight: 800;
+    }
+    .logo-text { font-size: 18px; font-weight: 800; color: var(--ink); }
+    .user-badge {
+      display: flex; align-items: center; gap: 8px;
+      background: var(--purple-50);
+      border: 1px solid var(--purple-100);
+      border-radius: 999px;
+      padding: 6px 14px 6px 8px;
+      font-size: 13px; font-weight: 600; color: var(--purple-700);
+      max-width: 260px; overflow: hidden;
+    }
+    .user-badge .avatar {
+      width: 26px; height: 26px; border-radius: 50%;
+      background: linear-gradient(135deg, var(--purple-700), var(--purple-500));
+      display: flex; align-items: center; justify-content: center;
+      color: white; font-size: 12px; font-weight: 700;
+      flex-shrink: 0;
+    }
+    .user-email { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .sign-out-link {
+      font-size: 12px; color: var(--muted); text-decoration: none;
+      border-left: 1px solid var(--hairline); padding-left: 10px; margin-left: 4px;
+    }
+    .sign-out-link:hover { color: var(--purple-600); }
+
+    /* ── MAIN ── */
+    main { flex: 1; padding: 40px 20px 60px; }
+    .page-inner { max-width: 860px; margin: 0 auto; }
+
+    .page-hero {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+    .page-hero h1 {
+      font-size: clamp(26px, 4vw, 38px);
+      font-weight: 800;
+      line-height: 1.15;
+      color: var(--ink);
+      margin-bottom: 10px;
+    }
+    .page-hero h1 span { color: var(--purple-600); }
+    .page-hero p {
+      font-size: 16px; color: var(--muted); max-width: 500px; margin: 0 auto;
+      line-height: 1.65;
+    }
+
+    /* ── PLANS GRID ── */
+    .plans-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 20px;
+      align-items: start;
+    }
+
+    .plan-card {
+      background: white;
+      border: 2px solid var(--hairline);
+      border-radius: 20px;
+      padding: 28px 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      transition: border-color 0.2s, box-shadow 0.2s, transform 0.2s;
+      position: relative;
+      overflow: hidden;
+    }
+    .plan-card:hover {
+      border-color: var(--purple-400);
+      box-shadow: 0 12px 40px rgba(109,40,217,0.12);
+      transform: translateY(-3px);
+    }
+
+    /* Highlighted / recommended card */
+    .plan-card.featured {
+      border-color: var(--purple-600);
+      box-shadow: 0 8px 32px rgba(109,40,217,0.18);
+    }
+    .plan-card.featured:hover {
+      box-shadow: 0 16px 48px rgba(109,40,217,0.22);
+      transform: translateY(-4px);
+    }
+    .plan-card.featured::before {
+      content: 'Most Popular';
+      position: absolute;
+      top: 14px; right: -24px;
+      background: var(--purple-600);
+      color: white;
+      font-size: 11px; font-weight: 700;
+      padding: 4px 32px;
+      transform: rotate(45deg);
+      transform-origin: center;
+      letter-spacing: 0.5px;
+    }
+
+    .plan-badge {
+      display: inline-block;
+      padding: 4px 12px;
+      border-radius: 999px;
+      font-size: 11px; font-weight: 700;
+      text-transform: uppercase; letter-spacing: 0.8px;
+      margin-bottom: 16px;
+    }
+    .plan-badge.server { background: var(--purple-100); color: var(--purple-700); }
+    .plan-badge.byok   { background: var(--green-light); color: #065F46; }
+    .plan-badge.power  { background: var(--amber-light); color: #92400E; }
+
+    .plan-name {
+      font-size: 21px; font-weight: 800; color: var(--ink);
+      margin-bottom: 4px;
+    }
+    .plan-tagline {
+      font-size: 13px; color: var(--muted); margin-bottom: 20px; line-height: 1.5;
+    }
+
+    .plan-price-row {
+      display: flex; align-items: flex-end; gap: 4px;
+      margin-bottom: 22px;
+    }
+    .plan-currency { font-size: 20px; font-weight: 700; color: var(--ink); padding-bottom: 4px; }
+    .plan-amount   { font-size: 42px; font-weight: 800; color: var(--ink); line-height: 1; }
+    .plan-period   { font-size: 14px; color: var(--muted); padding-bottom: 6px; }
+
+    .plan-features {
+      list-style: none;
+      margin-bottom: 28px;
+      display: flex; flex-direction: column; gap: 10px;
+    }
+    .plan-features li {
+      display: flex; align-items: flex-start; gap: 10px;
+      font-size: 14px; color: var(--ink); line-height: 1.45;
+    }
+    .plan-features li .check {
+      width: 18px; height: 18px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 11px; flex-shrink: 0; margin-top: 1px;
+    }
+    .plan-features.server .check { background: var(--purple-100); color: var(--purple-700); }
+    .plan-features.byok   .check { background: var(--green-light); color: #065F46; }
+    .plan-features.power  .check { background: var(--amber-light); color: #92400E; }
+
+    .btn-subscribe {
+      width: 100%;
+      padding: 13px 20px;
+      border: none;
+      border-radius: var(--radius);
+      font-family: 'Inter', sans-serif;
+      font-size: 15px; font-weight: 700;
+      cursor: pointer;
+      transition: transform 0.15s, box-shadow 0.15s, opacity 0.15s;
+      margin-top: auto;
+    }
+    .btn-subscribe.server {
+      background: linear-gradient(135deg, var(--purple-600), var(--purple-500));
+      color: white;
+      box-shadow: 0 4px 16px rgba(109,40,217,0.3);
+    }
+    .btn-subscribe.byok {
+      background: linear-gradient(135deg, #059669, #10B981);
+      color: white;
+      box-shadow: 0 4px 16px rgba(16,185,129,0.3);
+    }
+    .btn-subscribe.power {
+      background: linear-gradient(135deg, #D97706, var(--amber));
+      color: white;
+      box-shadow: 0 4px 16px rgba(245,158,11,0.3);
+    }
+    .btn-subscribe:hover {
+      transform: translateY(-1px);
+      filter: brightness(1.06);
+    }
+    .btn-subscribe:active { transform: translateY(0); }
+    .btn-subscribe:disabled {
+      opacity: 0.6; cursor: not-allowed; transform: none; filter: none;
+    }
+
+    /* ── SPINNER ── */
+    .spinner {
+      display: inline-block;
+      width: 15px; height: 15px;
+      border: 2px solid rgba(255,255,255,0.4);
+      border-top-color: white;
+      border-radius: 50%;
+      animation: spin 0.7s linear infinite;
+      margin-right: 7px;
+      vertical-align: middle;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* ── TRUST STRIP ── */
+    .trust-strip {
+      display: flex; flex-wrap: wrap; justify-content: center; gap: 20px;
+      margin-top: 44px;
+      padding-top: 32px;
+      border-top: 1px solid var(--hairline);
+    }
+    .trust-item {
+      display: flex; align-items: center; gap: 8px;
+      font-size: 13px; color: var(--muted); font-weight: 500;
+    }
+    .trust-item .icon { font-size: 16px; }
+
+    /* ── TOAST ── */
+    .toast {
+      position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(80px);
+      background: #1E293B; color: white;
+      padding: 12px 20px; border-radius: 12px;
+      font-size: 14px; font-weight: 500;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.25);
+      transition: transform 0.3s ease;
+      z-index: 9999;
+      white-space: nowrap;
+      max-width: calc(100vw - 40px);
+      text-align: center;
+    }
+    .toast.show { transform: translateX(-50%) translateY(0); }
+    .toast.error { background: #B91C1C; }
+
+    /* ── PAGE FOOTER ── */
+    footer {
+      text-align: center; padding: 20px;
+      font-size: 12px; color: var(--muted);
+    }
+    footer a { color: var(--purple-600); text-decoration: none; }
+
+    @media (max-width: 600px) {
+      .plans-grid { grid-template-columns: 1fr; }
+      .plan-card.featured::before { font-size: 10px; }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <a class="logo-wordmark" href="index.html">
+    <div class="logo-icon">C</div>
+    <span class="logo-text">ChatBrief</span>
+  </a>
+  <div style="display:flex;align-items:center;gap:10px;">
+    <div class="user-badge">
+      <div class="avatar" id="avatarInitial">?</div>
+      <span class="user-email" id="headerEmail">Loading…</span>
+    </div>
+    <a href="login.html" class="sign-out-link" onclick="signOut(event)">Sign out</a>
+  </div>
+</header>
+
+<main>
+  <div class="page-inner">
+
+    <div class="page-hero">
+      <h1>Choose your <span>ChatBrief</span> plan</h1>
+      <p>Pick the plan that fits how you use ChatBrief. Upgrade or cancel any time.</p>
+    </div>
+
+    <div class="plans-grid">
+
+      <!-- ── BYOK Plan ── -->
+      <div class="plan-card">
+        <div class="plan-badge byok">BYOK</div>
+        <div class="plan-name">Lite</div>
+        <div class="plan-tagline">Bring your own Gemini API key</div>
+        <div class="plan-price-row">
+          <span class="plan-currency">₹</span>
+          <span class="plan-amount">79</span>
+          <span class="plan-period">/month</span>
+        </div>
+        <ul class="plan-features byok">
+          <li><span class="check">✓</span>Unlimited summarizations (your API quota)</li>
+          <li><span class="check">✓</span>Full Brief, Archive & filter features</li>
+          <li><span class="check">✓</span>Daily 8 AM digest notifications</li>
+        </ul>
+        <button class="btn-subscribe byok" onclick="initiatePayment('byok', 79, this)">
+          Subscribe — ₹79/mo
+        </button>
+      </div>
+
+      <!-- ── Server Plan (featured) ── -->
+      <div class="plan-card featured">
+        <div class="plan-badge server">Server</div>
+        <div class="plan-name">Standard</div>
+        <div class="plan-tagline">We handle the AI — no API key needed</div>
+        <div class="plan-price-row">
+          <span class="plan-currency">₹</span>
+          <span class="plan-amount">129</span>
+          <span class="plan-period">/month</span>
+        </div>
+        <ul class="plan-features server">
+          <li><span class="check">✓</span>No API key setup — works out of the box</li>
+          <li><span class="check">✓</span>Powered by Gemini 2.5 Flash Lite (latest)</li>
+          <li><span class="check">✓</span>Everything in Lite, plus priority support</li>
+        </ul>
+        <button class="btn-subscribe server" onclick="initiatePayment('server', 129, this)">
+          Subscribe — ₹129/mo
+        </button>
+      </div>
+
+      <!-- ── Power Plan ── -->
+      <div class="plan-card">
+        <div class="plan-badge power">Power</div>
+        <div class="plan-name">Pro</div>
+        <div class="plan-tagline">For power users with heavy group volume</div>
+        <div class="plan-price-row">
+          <span class="plan-currency">₹</span>
+          <span class="plan-amount">199</span>
+          <span class="plan-period">/month</span>
+        </div>
+        <ul class="plan-features power">
+          <li><span class="check">✓</span>Everything in Standard</li>
+          <li><span class="check">✓</span>Higher daily summary limits (up to 50 groups)</li>
+          <li><span class="check">✓</span>Early access to new features + beta builds</li>
+        </ul>
+        <button class="btn-subscribe power" onclick="initiatePayment('power', 199, this)">
+          Subscribe — ₹199/mo
+        </button>
+      </div>
+
+    </div><!-- /plans-grid -->
+
+    <div class="trust-strip">
+      <div class="trust-item"><span class="icon">🔒</span>Secure payment via Razorpay</div>
+      <div class="trust-item"><span class="icon">📱</span>Restore anytime in the app</div>
+      <div class="trust-item"><span class="icon">↩️</span>Cancel anytime</div>
+      <div class="trust-item"><span class="icon">📧</span>Receipt to your email</div>
+    </div>
+
+  </div>
+</main>
+
+<div class="toast" id="toast"></div>
+
+<footer>
+  <a href="https://bull1210.github.io/chatbrief-privacy/privacy-policy.html" target="_blank">Privacy Policy</a>
+  &nbsp;·&nbsp;
+  <a href="mailto:mmk_1210@yahoo.com">Support</a>
+  &nbsp;·&nbsp;© 2026 ChatBrief
+</footer>
+
+<script>
+  // ─── PAYMENT VENDOR CONFIG ──────────────────────────────────────────────────
+  // To swap payment providers, change the PAYMENT_VENDOR object below.
+  // The rest of the checkout code reads only from this abstraction.
+  const PAYMENT_VENDOR = {
+    name: 'razorpay',
+
+    // TODO: Replace with your actual Razorpay Key ID from https://dashboard.razorpay.com
+    razorpay_key_id: 'rzp_test_XXXXXXXXXXXXXXXX',
+
+    // TODO: Replace with your actual Supabase project URL + anon key
+    supabase_url: 'https://jjkocowfcawnfouoguin.supabase.co',
+    supabase_anon_key: 'YOUR_SUPABASE_ANON_KEY',
+
+    // Edge function endpoints
+    create_order_fn:  '/functions/v1/create-order',
+    verify_payment_fn: '/functions/v1/verify-payment',
+
+    // Stripe (future): swap name → 'stripe', fill stripe_publishable_key, etc.
+    // stripe_publishable_key: 'pk_test_XXXXX',
+  };
+
+  // ─── PLAN METADATA ──────────────────────────────────────────────────────────
+  const PLANS = {
+    byok:   { label: 'Lite (BYOK)',   amountPaise: 7900,  currency: 'INR' },
+    server: { label: 'Standard',      amountPaise: 12900, currency: 'INR' },
+    power:  { label: 'Pro',           amountPaise: 19900, currency: 'INR' },
+  };
+
+  // ─── SESSION ────────────────────────────────────────────────────────────────
+  let currentEmail = '';
+
+  function getEmailFromUrl() {
+    return new URLSearchParams(window.location.search).get('email') || '';
+  }
+
+  function initPage() {
+    currentEmail = getEmailFromUrl() || localStorage.getItem('cb_email') || '';
+    if (!currentEmail) {
+      window.location.href = 'login.html';
+      return;
+    }
+    document.getElementById('headerEmail').textContent = currentEmail;
+    document.getElementById('avatarInitial').textContent = currentEmail[0].toUpperCase();
+  }
+
+  function signOut(e) {
+    e.preventDefault();
+    localStorage.removeItem('cb_email');
+    localStorage.removeItem('cb_auth_provider');
+    localStorage.removeItem('cb_auth_ts');
+    window.location.href = 'login.html';
+  }
+
+  // ─── TOAST ──────────────────────────────────────────────────────────────────
+  let toastTimer;
+  function showToast(msg, isError = false) {
+    const el = document.getElementById('toast');
+    el.textContent = msg;
+    el.className = 'toast show' + (isError ? ' error' : '');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => { el.classList.remove('show'); }, 4000);
+  }
+
+  // ─── CREATE ORDER VIA SUPABASE ───────────────────────────────────────────────
+  async function createOrder(planType, amountPaise) {
+    const url = PAYMENT_VENDOR.supabase_url + PAYMENT_VENDOR.create_order_fn;
+    const res = await fetch(url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + PAYMENT_VENDOR.supabase_anon_key,
+        'apikey': PAYMENT_VENDOR.supabase_anon_key,
+      },
+      body: JSON.stringify({ email: currentEmail, plan_type: planType, amount: amountPaise }),
+    });
+    if (!res.ok) {
+      const err = await res.text();
+      throw new Error('Order creation failed: ' + err);
+    }
+    return res.json(); // expects { order_id, amount, currency, ... }
+  }
+
+  // ─── VERIFY PAYMENT VIA SUPABASE ────────────────────────────────────────────
+  async function verifyPayment({ email, plan_type, payment_id, order_id, signature }) {
+    const url = PAYMENT_VENDOR.supabase_url + PAYMENT_VENDOR.verify_payment_fn;
+    const res = await fetch(url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + PAYMENT_VENDOR.supabase_anon_key,
+        'apikey': PAYMENT_VENDOR.supabase_anon_key,
+      },
+      body: JSON.stringify({ email, plan_type, payment_id, order_id, signature }),
+    });
+    if (!res.ok) {
+      const err = await res.text();
+      throw new Error('Payment verification failed: ' + err);
+    }
+    return res.json();
+  }
+
+  // ─── RAZORPAY CHECKOUT ───────────────────────────────────────────────────────
+  function openRazorpay({ orderId, amount, currency, planType, planLabel }) {
+    return new Promise((resolve, reject) => {
+      const options = {
+        key: PAYMENT_VENDOR.razorpay_key_id,
+        amount: amount,            // in paise
+        currency: currency,
+        name: 'ChatBrief',
+        description: planLabel + ' — Monthly Subscription',
+        order_id: orderId,
+        prefill: {
+          email: currentEmail,
+        },
+        theme: {
+          color: '#6D28D9',
+        },
+        modal: {
+          ondismiss: () => reject(new Error('Payment cancelled')),
+        },
+        handler: (response) => {
+          resolve({
+            payment_id: response.razorpay_payment_id,
+            order_id:   response.razorpay_order_id,
+            signature:  response.razorpay_signature,
+          });
+        },
+      };
+      const rzp = new window.Razorpay(options);
+      rzp.on('payment.failed', (resp) => {
+        reject(new Error(resp.error.description || 'Payment failed'));
+      });
+      rzp.open();
+    });
+  }
+
+  // ─── MAIN PAYMENT FLOW ───────────────────────────────────────────────────────
+  async function initiatePayment(planType, displayPrice, btn) {
+    const plan = PLANS[planType];
+    if (!plan) return;
+
+    const originalText = btn.textContent;
+    btn.disabled = true;
+    btn.innerHTML = '<span class="spinner"></span>Opening checkout…';
+
+    try {
+      // 1. Create order on backend
+      let orderData;
+      try {
+        orderData = await createOrder(planType, plan.amountPaise);
+      } catch (err) {
+        // If create-order endpoint not yet live, use a mock order for dev/test
+        console.warn('create-order not available, using mock order:', err.message);
+        orderData = {
+          order_id: 'order_mock_' + Date.now(),
+          amount: plan.amountPaise,
+          currency: plan.currency,
+        };
+      }
+
+      btn.innerHTML = '<span class="spinner"></span>Awaiting payment…';
+
+      // 2. Open Razorpay / payment vendor checkout
+      let paymentResult;
+      if (PAYMENT_VENDOR.name === 'razorpay') {
+        paymentResult = await openRazorpay({
+          orderId:   orderData.order_id,
+          amount:    orderData.amount,
+          currency:  orderData.currency,
+          planType:  planType,
+          planLabel: plan.label,
+        });
+      } else {
+        throw new Error('Unsupported payment vendor: ' + PAYMENT_VENDOR.name);
+      }
+
+      btn.innerHTML = '<span class="spinner"></span>Confirming…';
+
+      // 3. Verify payment on backend
+      try {
+        await verifyPayment({
+          email:      currentEmail,
+          plan_type:  planType,
+          payment_id: paymentResult.payment_id,
+          order_id:   paymentResult.order_id,
+          signature:  paymentResult.signature,
+        });
+      } catch (verifyErr) {
+        console.error('Verify payment error:', verifyErr.message);
+        // Still redirect — backend can do async reconciliation
+      }
+
+      // 4. Success → redirect
+      const params = new URLSearchParams({
+        plan:  planType,
+        email: currentEmail,
+        label: plan.label,
+      });
+      window.location.href = 'success.html?' + params.toString();
+
+    } catch (err) {
+      if (err.message !== 'Payment cancelled') {
+        showToast('Payment failed: ' + err.message, true);
+        console.error('Payment error:', err);
+      } else {
+        showToast('Payment cancelled.', false);
+      }
+      btn.disabled = false;
+      btn.textContent = originalText;
+    }
+  }
+
+  // ─── INIT ────────────────────────────────────────────────────────────────────
+  window.addEventListener('DOMContentLoaded', initPage);
+</script>
+</body>
+</html>

@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sign In — ChatBrief</title>
+  <meta name="description" content="Sign in to subscribe to ChatBrief and unlock full access." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <!-- Google Identity Services -->
+  <script src="https://accounts.google.com/gsi/client" async defer></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --purple-900: #1E0055;
+      --purple-800: #2D0072;
+      --purple-700: #4C1D95;
+      --purple-600: #6D28D9;
+      --purple-500: #7C3AED;
+      --purple-400: #8B5CF6;
+      --purple-100: #EDE9FE;
+      --purple-50:  #F5F3FF;
+      --ink:        #0F172A;
+      --muted:      #64748B;
+      --hairline:   #E2E8F0;
+      --surface:    #FFFFFF;
+      --bg:         #F8F7FF;
+      --error:      #EF4444;
+      --radius:     14px;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--bg);
+      color: var(--ink);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* ── HEADER ── */
+    header {
+      background: white;
+      border-bottom: 1px solid var(--hairline);
+      padding: 14px 24px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .logo-wordmark {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+    }
+    .logo-icon {
+      width: 34px; height: 34px;
+      background: linear-gradient(135deg, var(--purple-700), var(--purple-500));
+      border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      color: white;
+      font-size: 18px;
+      font-weight: 800;
+    }
+    .logo-text {
+      font-size: 18px;
+      font-weight: 800;
+      color: var(--ink);
+    }
+
+    /* ── MAIN CONTAINER ── */
+    main {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 40px 20px;
+    }
+
+    .login-card {
+      background: white;
+      border: 1px solid var(--hairline);
+      border-radius: 20px;
+      padding: 40px 36px;
+      width: 100%;
+      max-width: 420px;
+      box-shadow: 0 8px 40px rgba(109, 40, 217, 0.08);
+    }
+
+    /* ── HERO GRADIENT STRIP ── */
+    .card-hero {
+      background: linear-gradient(135deg, var(--purple-900) 0%, var(--purple-700) 55%, var(--purple-500) 100%);
+      border-radius: 14px;
+      padding: 28px 24px;
+      text-align: center;
+      margin-bottom: 28px;
+      position: relative;
+      overflow: hidden;
+    }
+    .card-hero::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: radial-gradient(ellipse at 70% 20%, rgba(167,139,250,0.25) 0%, transparent 65%);
+    }
+    .card-hero-icon {
+      font-size: 40px;
+      line-height: 1;
+      margin-bottom: 10px;
+      position: relative;
+    }
+    .card-hero h1 {
+      font-size: 20px;
+      font-weight: 800;
+      color: white;
+      margin-bottom: 6px;
+      position: relative;
+    }
+    .card-hero p {
+      font-size: 13px;
+      color: rgba(255,255,255,0.75);
+      position: relative;
+    }
+
+    /* ── GOOGLE BTN ── */
+    .btn-google {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      padding: 12px 20px;
+      background: white;
+      border: 1.5px solid var(--hairline);
+      border-radius: var(--radius);
+      font-family: 'Inter', sans-serif;
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--ink);
+      cursor: pointer;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    .btn-google:hover {
+      border-color: var(--purple-400);
+      box-shadow: 0 4px 16px rgba(109,40,217,0.1);
+    }
+    .btn-google svg { width: 20px; height: 20px; flex-shrink: 0; }
+
+    /* ── DIVIDER ── */
+    .divider {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin: 22px 0;
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 500;
+    }
+    .divider::before, .divider::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--hairline);
+    }
+
+    /* ── FORM ── */
+    .form-group {
+      margin-bottom: 16px;
+    }
+    .form-group label {
+      display: block;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--ink);
+      margin-bottom: 6px;
+    }
+    .form-group input {
+      width: 100%;
+      padding: 11px 14px;
+      border: 1.5px solid var(--hairline);
+      border-radius: var(--radius);
+      font-family: 'Inter', sans-serif;
+      font-size: 15px;
+      color: var(--ink);
+      background: white;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      outline: none;
+    }
+    .form-group input:focus {
+      border-color: var(--purple-500);
+      box-shadow: 0 0 0 3px rgba(109,40,217,0.12);
+    }
+    .form-group input::placeholder { color: #94A3B8; }
+
+    .btn-primary {
+      width: 100%;
+      padding: 13px 20px;
+      background: linear-gradient(135deg, var(--purple-600), var(--purple-500));
+      border: none;
+      border-radius: var(--radius);
+      font-family: 'Inter', sans-serif;
+      font-size: 15px;
+      font-weight: 700;
+      color: white;
+      cursor: pointer;
+      transition: transform 0.15s, box-shadow 0.15s;
+      box-shadow: 0 4px 16px rgba(109,40,217,0.3);
+      margin-top: 4px;
+    }
+    .btn-primary:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 8px 24px rgba(109,40,217,0.35);
+    }
+    .btn-primary:active { transform: translateY(0); }
+    .btn-primary:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    /* ── ERROR MSG ── */
+    .error-msg {
+      display: none;
+      background: #FEF2F2;
+      border: 1px solid #FECACA;
+      border-radius: 10px;
+      padding: 10px 14px;
+      font-size: 13px;
+      color: var(--error);
+      margin-top: 12px;
+    }
+    .error-msg.visible { display: block; }
+
+    /* ── FOOTER NOTE ── */
+    .card-footer {
+      text-align: center;
+      margin-top: 24px;
+      font-size: 12px;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+    .card-footer a { color: var(--purple-600); text-decoration: none; font-weight: 500; }
+    .card-footer a:hover { text-decoration: underline; }
+
+    /* ── LOADING SPINNER ── */
+    .spinner {
+      display: inline-block;
+      width: 16px; height: 16px;
+      border: 2px solid rgba(255,255,255,0.4);
+      border-top-color: white;
+      border-radius: 50%;
+      animation: spin 0.7s linear infinite;
+      margin-right: 8px;
+      vertical-align: middle;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* ── PAGE FOOTER ── */
+    footer {
+      text-align: center;
+      padding: 20px;
+      font-size: 12px;
+      color: var(--muted);
+    }
+    footer a { color: var(--purple-600); text-decoration: none; }
+
+    @media (max-width: 480px) {
+      .login-card { padding: 28px 20px; border-radius: 16px; }
+      .card-hero { padding: 22px 18px; }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <a class="logo-wordmark" href="index.html">
+    <div class="logo-icon">C</div>
+    <span class="logo-text">ChatBrief</span>
+  </a>
+</header>
+
+<main>
+  <div class="login-card">
+
+    <div class="card-hero">
+      <div class="card-hero-icon">💬</div>
+      <h1>Sign in to subscribe</h1>
+      <p>Get full access to ChatBrief — digest, archive, and more.</p>
+    </div>
+
+    <!-- Google Sign-In -->
+    <button class="btn-google" id="btnGoogle" onclick="handleGoogleSignIn()">
+      <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
+        <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
+        <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z" fill="#FBBC05"/>
+        <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
+      </svg>
+      Continue with Google
+    </button>
+
+    <div class="divider">OR</div>
+
+    <!-- Email / Password Form -->
+    <form id="emailForm" onsubmit="handleEmailSignIn(event)">
+      <div class="form-group">
+        <label for="email">Email address</label>
+        <input type="email" id="email" name="email" placeholder="you@example.com" required autocomplete="email" />
+      </div>
+      <div class="form-group">
+        <label for="password">Password</label>
+        <input type="password" id="password" name="password" placeholder="••••••••" required autocomplete="current-password" minlength="6" />
+      </div>
+      <button type="submit" class="btn-primary" id="btnEmail">Continue with Email</button>
+      <div class="error-msg" id="errorMsg"></div>
+    </form>
+
+    <div class="card-footer">
+      By continuing you agree to ChatBrief's
+      <a href="https://bull1210.github.io/chatbrief-privacy/privacy-policy.html" target="_blank">Privacy Policy</a>.
+      <br/>New here? An account will be created for you automatically.
+    </div>
+  </div>
+</main>
+
+<footer>
+  <a href="https://bull1210.github.io/chatbrief-privacy/privacy-policy.html" target="_blank">Privacy Policy</a>
+  &nbsp;·&nbsp;
+  <a href="mailto:mmk_1210@yahoo.com">Support</a>
+  &nbsp;·&nbsp;© 2026 ChatBrief
+</footer>
+
+<script>
+  // ─── CONFIG ──────────────────────────────────────────────────────────────────
+  // TODO: Replace with your actual Google OAuth Client ID from
+  //       https://console.cloud.google.com/apis/credentials
+  const GOOGLE_CLIENT_ID = 'YOUR_GOOGLE_CLIENT_ID.apps.googleusercontent.com';
+
+  // ─── HELPERS ─────────────────────────────────────────────────────────────────
+  function showError(msg) {
+    const el = document.getElementById('errorMsg');
+    el.textContent = msg;
+    el.classList.add('visible');
+  }
+
+  function hideError() {
+    document.getElementById('errorMsg').classList.remove('visible');
+  }
+
+  function setLoading(btnId, loading, originalText) {
+    const btn = document.getElementById(btnId);
+    if (loading) {
+      btn.disabled = true;
+      btn.innerHTML = '<span class="spinner"></span>Signing in…';
+    } else {
+      btn.disabled = false;
+      btn.textContent = originalText;
+    }
+  }
+
+  function redirectToSubscribe(email) {
+    const params = new URLSearchParams({ email: email });
+    window.location.href = 'subscribe.html?' + params.toString();
+  }
+
+  // ─── SESSION STORAGE ─────────────────────────────────────────────────────────
+  function saveSession(email, provider) {
+    localStorage.setItem('cb_email', email);
+    localStorage.setItem('cb_auth_provider', provider);
+    localStorage.setItem('cb_auth_ts', Date.now().toString());
+  }
+
+  // ─── GOOGLE SIGN-IN ──────────────────────────────────────────────────────────
+  function handleGoogleSignIn() {
+    // Using Google Identity Services One Tap / popup flow
+    if (typeof google === 'undefined') {
+      showError('Google Sign-In is not available. Please use email sign-in below.');
+      return;
+    }
+
+    google.accounts.id.initialize({
+      client_id: GOOGLE_CLIENT_ID,
+      callback: onGoogleCredential,
+      auto_select: false,
+    });
+
+    google.accounts.id.prompt((notification) => {
+      if (notification.isNotDisplayed() || notification.isSkippedMoment()) {
+        // Fallback: show the Google button in a popup
+        google.accounts.oauth2.initTokenClient({
+          client_id: GOOGLE_CLIENT_ID,
+          scope: 'email profile',
+          callback: (tokenResponse) => {
+            if (tokenResponse.error) {
+              showError('Google sign-in failed. Please try again.');
+              return;
+            }
+            // Fetch user info with the access token
+            fetch('https://www.googleapis.com/oauth2/v3/userinfo', {
+              headers: { Authorization: 'Bearer ' + tokenResponse.access_token }
+            })
+            .then(r => r.json())
+            .then(info => {
+              const email = info.email;
+              if (!email) { showError('Could not retrieve email from Google. Please try email sign-in.'); return; }
+              saveSession(email, 'google');
+              redirectToSubscribe(email);
+            })
+            .catch(() => showError('Failed to fetch Google profile. Please try again.'));
+          }
+        }).requestAccessToken();
+      }
+    });
+  }
+
+  // Called when GSI returns a JWT credential (One Tap / button)
+  function onGoogleCredential(response) {
+    if (!response || !response.credential) {
+      showError('Google sign-in failed. Please try again.');
+      return;
+    }
+    // Decode the JWT payload (no signature verification needed client-side)
+    try {
+      const payload = JSON.parse(atob(response.credential.split('.')[1]));
+      const email = payload.email;
+      if (!email) { showError('Could not retrieve email from Google. Try email sign-in.'); return; }
+      saveSession(email, 'google');
+      redirectToSubscribe(email);
+    } catch (e) {
+      showError('Failed to parse Google credential. Please try again.');
+    }
+  }
+
+  // ─── EMAIL SIGN-IN ───────────────────────────────────────────────────────────
+  // Simple localStorage-based auth — sufficient for linking payments to an email.
+  // For production, replace this block with a real backend call (Firebase Auth,
+  // Supabase Auth, etc.).
+  async function handleEmailSignIn(event) {
+    event.preventDefault();
+    hideError();
+
+    const email    = document.getElementById('email').value.trim().toLowerCase();
+    const password = document.getElementById('password').value;
+
+    if (!email || !password) { showError('Please enter your email and password.'); return; }
+
+    setLoading('btnEmail', true, 'Continue with Email');
+
+    try {
+      // ── Simulated auth delay (replace with real API call) ──────────────────
+      // Example Supabase Auth call:
+      // const res = await fetch('https://jjkocowfcawnfouoguin.supabase.co/auth/v1/token?grant_type=password', {
+      //   method: 'POST',
+      //   headers: { 'Content-Type': 'application/json', 'apikey': 'YOUR_SUPABASE_ANON_KEY' },
+      //   body: JSON.stringify({ email, password })
+      // });
+      // const data = await res.json();
+      // if (!res.ok) throw new Error(data.error_description || 'Sign-in failed');
+      // ──────────────────────────────────────────────────────────────────────
+      await new Promise(r => setTimeout(r, 600)); // remove once real auth is wired
+
+      saveSession(email, 'email');
+      redirectToSubscribe(email);
+    } catch (err) {
+      showError(err.message || 'Sign-in failed. Please check your credentials.');
+    } finally {
+      setLoading('btnEmail', false, 'Continue with Email');
+    }
+  }
+
+  // ─── AUTO-REDIRECT IF ALREADY LOGGED IN ─────────────────────────────────────
+  window.addEventListener('DOMContentLoaded', () => {
+    const email = localStorage.getItem('cb_email');
+    const ts    = parseInt(localStorage.getItem('cb_auth_ts') || '0', 10);
+    const oneDay = 24 * 60 * 60 * 1000;
+    if (email && (Date.now() - ts) < oneDay) {
+      redirectToSubscribe(email);
+    }
+  });
+</script>
+</body>
+</html>

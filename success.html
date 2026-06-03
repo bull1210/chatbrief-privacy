@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>You're subscribed! — ChatBrief</title>
+  <meta name="description" content="Welcome to ChatBrief! Your subscription is active." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --purple-900: #1E0055;
+      --purple-700: #4C1D95;
+      --purple-600: #6D28D9;
+      --purple-500: #7C3AED;
+      --purple-400: #8B5CF6;
+      --purple-100: #EDE9FE;
+      --purple-50:  #F5F3FF;
+      --green:      #059669;
+      --green-light:#D1FAE5;
+      --ink:        #0F172A;
+      --muted:      #64748B;
+      --hairline:   #E2E8F0;
+      --surface:    #FFFFFF;
+      --bg:         #F8F7FF;
+      --radius:     14px;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--bg);
+      color: var(--ink);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* ── HEADER ── */
+    header {
+      background: white;
+      border-bottom: 1px solid var(--hairline);
+      padding: 14px 24px;
+      display: flex;
+      align-items: center;
+    }
+    .logo-wordmark { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+    .logo-icon {
+      width: 34px; height: 34px;
+      background: linear-gradient(135deg, var(--purple-700), var(--purple-500));
+      border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      color: white; font-size: 18px; font-weight: 800;
+    }
+    .logo-text { font-size: 18px; font-weight: 800; color: var(--ink); }
+
+    /* ── MAIN ── */
+    main {
+      flex: 1;
+      display: flex; align-items: flex-start; justify-content: center;
+      padding: 40px 20px 60px;
+    }
+    .success-wrapper {
+      width: 100%; max-width: 520px;
+      display: flex; flex-direction: column; gap: 24px;
+    }
+
+    /* ── CELEBRATION CARD ── */
+    .celebration-card {
+      background: white;
+      border: 1px solid var(--hairline);
+      border-radius: 24px;
+      overflow: hidden;
+      box-shadow: 0 8px 40px rgba(109,40,217,0.1);
+    }
+
+    /* Gradient top strip */
+    .card-top {
+      background: linear-gradient(135deg, var(--purple-900) 0%, var(--purple-700) 50%, var(--purple-500) 100%);
+      padding: 36px 28px 32px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .card-top::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: radial-gradient(ellipse at 70% 20%, rgba(167,139,250,0.25) 0%, transparent 60%);
+    }
+
+    /* Animated checkmark */
+    .checkmark-wrap {
+      position: relative;
+      width: 72px; height: 72px;
+      margin: 0 auto 18px;
+    }
+    .checkmark-circle {
+      width: 72px; height: 72px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.12);
+      border: 2px solid rgba(255,255,255,0.35);
+      display: flex; align-items: center; justify-content: center;
+      animation: popIn 0.5s cubic-bezier(0.34,1.56,0.64,1) 0.1s both;
+    }
+    .checkmark-circle svg {
+      width: 36px; height: 36px;
+      stroke: white;
+      stroke-width: 3;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      fill: none;
+    }
+    .checkmark-circle svg path {
+      stroke-dasharray: 40;
+      stroke-dashoffset: 40;
+      animation: drawCheck 0.45s ease 0.4s forwards;
+    }
+    @keyframes popIn {
+      from { transform: scale(0.4); opacity: 0; }
+      to   { transform: scale(1);   opacity: 1; }
+    }
+    @keyframes drawCheck {
+      to { stroke-dashoffset: 0; }
+    }
+
+    .card-top h1 {
+      font-size: 24px; font-weight: 800; color: white;
+      margin-bottom: 8px;
+      position: relative;
+    }
+    .card-top .subtitle {
+      font-size: 14px; color: rgba(255,255,255,0.78);
+      position: relative;
+    }
+
+    /* Plan pill */
+    .plan-pill {
+      display: inline-flex; align-items: center; gap: 6px;
+      background: rgba(255,255,255,0.15);
+      border: 1px solid rgba(255,255,255,0.3);
+      border-radius: 999px;
+      padding: 5px 14px;
+      font-size: 13px; font-weight: 600; color: #E9D5FF;
+      margin-top: 14px;
+      position: relative;
+    }
+
+    /* Email row */
+    .card-body { padding: 24px 28px; }
+
+    .email-block {
+      background: var(--purple-50);
+      border: 1.5px solid var(--purple-100);
+      border-radius: 12px;
+      padding: 14px 16px;
+      display: flex; align-items: center; gap: 12px;
+      margin-bottom: 24px;
+    }
+    .email-block .icon-wrap {
+      width: 36px; height: 36px; border-radius: 50%; flex-shrink: 0;
+      background: linear-gradient(135deg, var(--purple-700), var(--purple-500));
+      display: flex; align-items: center; justify-content: center;
+      color: white; font-size: 15px; font-weight: 800;
+    }
+    .email-block .email-info { min-width: 0; }
+    .email-block .email-label { font-size: 11px; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; }
+    .email-block .email-value {
+      font-size: 15px; font-weight: 700; color: var(--purple-700);
+      word-break: break-all;
+    }
+
+    /* ── RESTORE INSTRUCTIONS ── */
+    .restore-card {
+      background: white;
+      border: 1px solid var(--hairline);
+      border-radius: 20px;
+      padding: 24px 24px;
+      box-shadow: 0 4px 20px rgba(109,40,217,0.06);
+    }
+    .restore-header {
+      display: flex; align-items: center; gap: 10px;
+      margin-bottom: 20px;
+    }
+    .restore-header .restore-icon {
+      width: 38px; height: 38px; border-radius: 10px;
+      background: var(--green-light);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 18px;
+    }
+    .restore-header h2 {
+      font-size: 16px; font-weight: 800; color: var(--ink);
+    }
+    .restore-header p { font-size: 12px; color: var(--muted); }
+
+    .steps-list {
+      counter-reset: restore-steps;
+      display: flex; flex-direction: column; gap: 12px;
+    }
+    .step-item {
+      display: flex; align-items: flex-start; gap: 14px;
+      counter-increment: restore-steps;
+    }
+    .step-num {
+      width: 24px; height: 24px; border-radius: 50%;
+      background: var(--purple-600); color: white;
+      font-size: 12px; font-weight: 800;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0; margin-top: 1px;
+    }
+    .step-item .step-text { font-size: 14px; color: var(--ink); line-height: 1.5; }
+    .step-item .step-text strong { color: var(--ink); }
+    .step-item .step-text .highlight {
+      background: var(--purple-100);
+      color: var(--purple-700);
+      padding: 1px 7px; border-radius: 6px;
+      font-weight: 700; font-size: 13px;
+      word-break: break-all;
+    }
+
+    /* ── CTA BUTTONS ── */
+    .cta-group {
+      display: flex; flex-direction: column; gap: 12px;
+    }
+    .btn-open-app {
+      width: 100%;
+      padding: 14px 20px;
+      background: linear-gradient(135deg, var(--purple-600), var(--purple-500));
+      border: none; border-radius: var(--radius);
+      font-family: 'Inter', sans-serif; font-size: 16px; font-weight: 700;
+      color: white; cursor: pointer; text-decoration: none;
+      display: flex; align-items: center; justify-content: center; gap: 10px;
+      box-shadow: 0 4px 20px rgba(109,40,217,0.3);
+      transition: transform 0.15s, box-shadow 0.15s;
+    }
+    .btn-open-app:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 8px 28px rgba(109,40,217,0.35);
+    }
+    .btn-open-app:active { transform: translateY(0); }
+    .btn-open-app .app-icon { font-size: 20px; }
+
+    .btn-play-store {
+      width: 100%;
+      padding: 13px 20px;
+      background: white; border: 1.5px solid var(--hairline);
+      border-radius: var(--radius);
+      font-family: 'Inter', sans-serif; font-size: 15px; font-weight: 600;
+      color: var(--ink); cursor: pointer; text-decoration: none;
+      display: flex; align-items: center; justify-content: center; gap: 10px;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    .btn-play-store:hover {
+      border-color: var(--purple-400);
+      box-shadow: 0 4px 16px rgba(109,40,217,0.1);
+    }
+
+    /* ── CONFETTI CANVAS ── */
+    #confetti-canvas {
+      position: fixed; top: 0; left: 0;
+      width: 100%; height: 100%;
+      pointer-events: none;
+      z-index: 9999;
+    }
+
+    /* ── PAGE FOOTER ── */
+    footer {
+      text-align: center; padding: 20px;
+      font-size: 12px; color: var(--muted);
+    }
+    footer a { color: var(--purple-600); text-decoration: none; }
+
+    @media (max-width: 480px) {
+      .card-body { padding: 20px 18px; }
+      .restore-card { padding: 20px 18px; }
+      .card-top h1 { font-size: 20px; }
+    }
+  </style>
+</head>
+<body>
+
+<canvas id="confetti-canvas"></canvas>
+
+<header>
+  <a class="logo-wordmark" href="index.html">
+    <div class="logo-icon">C</div>
+    <span class="logo-text">ChatBrief</span>
+  </a>
+</header>
+
+<main>
+  <div class="success-wrapper">
+
+    <!-- ── CELEBRATION CARD ── -->
+    <div class="celebration-card">
+      <div class="card-top">
+        <div class="checkmark-wrap">
+          <div class="checkmark-circle">
+            <svg viewBox="0 0 24 24"><path d="M4 12 L9 17 L20 6"/></svg>
+          </div>
+        </div>
+        <h1>You're subscribed! 🎉</h1>
+        <p class="subtitle">Welcome to ChatBrief — enjoy the full experience.</p>
+        <div class="plan-pill" id="planPill">
+          <span>✦</span>
+          <span id="planLabel">Loading plan…</span>
+        </div>
+      </div>
+
+      <div class="card-body">
+        <div class="email-block">
+          <div class="icon-wrap" id="avatarLetter">?</div>
+          <div class="email-info">
+            <div class="email-label">Subscribed email</div>
+            <div class="email-value" id="emailDisplay">—</div>
+          </div>
+        </div>
+      </div>
+    </div><!-- /celebration-card -->
+
+    <!-- ── RESTORE INSTRUCTIONS ── -->
+    <div class="restore-card">
+      <div class="restore-header">
+        <div class="restore-icon">📲</div>
+        <div>
+          <h2>How to restore in the app</h2>
+          <p>Follow these steps to activate your subscription</p>
+        </div>
+      </div>
+
+      <ol class="steps-list">
+        <li class="step-item">
+          <div class="step-num">1</div>
+          <div class="step-text">Open the <strong>ChatBrief</strong> app on your Android phone.</div>
+        </li>
+        <li class="step-item">
+          <div class="step-num">2</div>
+          <div class="step-text">Tap <strong>Settings</strong> (bottom navigation bar, rightmost tab).</div>
+        </li>
+        <li class="step-item">
+          <div class="step-num">3</div>
+          <div class="step-text">When the free trial ends, a <strong>subscription wall</strong> will appear — or find the <em>Restore Purchase</em> option in Settings.</div>
+        </li>
+        <li class="step-item">
+          <div class="step-num">4</div>
+          <div class="step-text">
+            Tap <strong>Restore Purchase</strong> and enter this email exactly:
+            <br/><br/>
+            <span class="highlight" id="restoreEmail">—</span>
+          </div>
+        </li>
+        <li class="step-item">
+          <div class="step-num">5</div>
+          <div class="step-text">Tap <strong>Restore</strong> — your subscription will activate immediately!</div>
+        </li>
+      </ol>
+    </div>
+
+    <!-- ── CTA BUTTONS ── -->
+    <div class="cta-group">
+      <!-- Deep link: opens ChatBrief app directly on Android -->
+      <a class="btn-open-app"
+         id="btnOpenApp"
+         href="intent://open#Intent;scheme=chatbrief;package=com.chatbrief.app;end">
+        <span class="app-icon">📱</span>
+        Open ChatBrief App
+      </a>
+      <a class="btn-play-store"
+         href="https://play.google.com/store/apps/details?id=com.chatbrief.app"
+         target="_blank">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="#3730A3"><path d="M3 20.5v-17c0-.83 1-.83 1.5-.5l14 8.5c.5.3.5 1.2 0 1.5l-14 8.5c-.5.3-1.5.3-1.5-.5z"/></svg>
+        Get it on Google Play
+      </a>
+    </div>
+
+  </div>
+</main>
+
+<footer>
+  <a href="https://bull1210.github.io/chatbrief-privacy/privacy-policy.html" target="_blank">Privacy Policy</a>
+  &nbsp;·&nbsp;
+  <a href="mailto:mmk_1210@yahoo.com">Support</a>
+  &nbsp;·&nbsp;© 2026 ChatBrief
+</footer>
+
+<script>
+  // ─── PAGE INIT ───────────────────────────────────────────────────────────────
+  const PLAN_LABELS = {
+    byok:   'Lite (BYOK) — ₹79/mo',
+    server: 'Standard — ₹129/mo',
+    power:  'Pro — ₹199/mo',
+  };
+
+  function initPage() {
+    const params   = new URLSearchParams(window.location.search);
+    const plan     = params.get('plan')  || '';
+    const email    = params.get('email') || localStorage.getItem('cb_email') || '';
+    const label    = params.get('label') || PLAN_LABELS[plan] || 'ChatBrief Subscription';
+
+    // Populate email displays
+    document.getElementById('emailDisplay').textContent = email || '—';
+    document.getElementById('restoreEmail').textContent  = email || '—';
+    if (email) {
+      document.getElementById('avatarLetter').textContent = email[0].toUpperCase();
+    }
+
+    // Plan label
+    document.getElementById('planLabel').textContent = label;
+
+    // Append email to deep link for convenience
+    if (email) {
+      const btn = document.getElementById('btnOpenApp');
+      btn.href = `intent://open?email=${encodeURIComponent(email)}#Intent;scheme=chatbrief;package=com.chatbrief.app;end`;
+    }
+  }
+
+  // ─── CONFETTI ────────────────────────────────────────────────────────────────
+  (function launchConfetti() {
+    const canvas = document.getElementById('confetti-canvas');
+    const ctx    = canvas.getContext('2d');
+    canvas.width  = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    const COLORS = ['#6D28D9','#8B5CF6','#A78BFA','#C4B5FD','#FCD34D','#F59E0B','#34D399','#60A5FA'];
+    const pieces = [];
+    const PIECE_COUNT = 110;
+
+    for (let i = 0; i < PIECE_COUNT; i++) {
+      pieces.push({
+        x: Math.random() * canvas.width,
+        y: -10 - Math.random() * 200,
+        w: 8 + Math.random() * 6,
+        h: 4 + Math.random() * 4,
+        color: COLORS[Math.floor(Math.random() * COLORS.length)],
+        vx: (Math.random() - 0.5) * 3,
+        vy: 2 + Math.random() * 3,
+        angle: Math.random() * Math.PI * 2,
+        spin: (Math.random() - 0.5) * 0.2,
+        life: 1,
+        decay: 0.003 + Math.random() * 0.005,
+      });
+    }
+
+    let animId;
+    function tick() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      let alive = false;
+      for (const p of pieces) {
+        p.x     += p.vx;
+        p.y     += p.vy;
+        p.angle += p.spin;
+        p.vy    += 0.07; // gravity
+        p.life  -= p.decay;
+        if (p.life <= 0) continue;
+        alive = true;
+        ctx.save();
+        ctx.globalAlpha = p.life;
+        ctx.translate(p.x, p.y);
+        ctx.rotate(p.angle);
+        ctx.fillStyle = p.color;
+        ctx.fillRect(-p.w / 2, -p.h / 2, p.w, p.h);
+        ctx.restore();
+      }
+      if (alive) {
+        animId = requestAnimationFrame(tick);
+      } else {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+      }
+    }
+
+    // Start confetti after a tiny delay so the page renders first
+    setTimeout(() => {
+      animId = requestAnimationFrame(tick);
+    }, 300);
+
+    window.addEventListener('resize', () => {
+      canvas.width  = window.innerWidth;
+      canvas.height = window.innerHeight;
+    });
+  })();
+
+  // ─── INIT ────────────────────────────────────────────────────────────────────
+  window.addEventListener('DOMContentLoaded', initPage);
+</script>
+</body>
+</html>
