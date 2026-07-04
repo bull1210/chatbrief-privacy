@@ -1,0 +1,184 @@
+  <!DOCTYPE html>
+  <html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Privacy Policy – TeleBrief</title>
+    <style>
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        max-width: 760px;
+        margin: 40px auto;
+        padding: 0 20px;
+        color: #1a1a1a;
+        line-height: 1.7;
+      }
+      h1 { font-size: 2rem; margin-bottom: 4px; }
+      h2 { font-size: 1.2rem; margin-top: 36px; color: #1E3A5F; }
+      p, li { font-size: 0.97rem; }
+      ul { padding-left: 20px; }
+      a { color: #0088CC; }
+      .meta { color: #666; font-size: 0.88rem; margin-bottom: 32px; }
+      hr { border: none; border-top: 1px solid #e5e5e5; margin: 40px 0; }
+    </style>
+  </head>
+  <body>
+
+    <h1>Privacy Policy</h1>
+    <p class="meta">App: <strong>TeleBrief</strong> &nbsp;|&nbsp; Package: com.telebrief.app &nbsp;|&nbsp; Last updated:
+   04 Jul 2026</p>
+
+    <p>
+      TeleBrief ("we", "our", or "the app") is a Telegram channel and group summarization tool
+      that helps you digest your Telegram conversations quickly. This Privacy Policy explains
+      what data we access, how it is used, and your rights as a user.
+    </p>
+
+    <h2>1. Telegram Authentication</h2>
+    <p>
+      TeleBrief uses Telegram's official <strong>TDLib</strong> library to let you sign in with
+      your Telegram account (phone number and verification code, or QR code login). This
+      authentication happens directly between your device and Telegram's own servers over
+      Telegram's encrypted MTProto protocol.
+    </p>
+    <ul>
+      <li>
+        Your phone number, verification code, and Telegram session are never sent to or stored
+        on TeleBrief's servers — the login flow is a direct connection between your device and
+        Telegram, exactly as if you were using Telegram's own app.
+      </li>
+      <li>
+        Your Telegram session is stored locally on your device by TDLib so you stay logged in.
+        Logging out inside the app clears this local session.
+      </li>
+    </ul>
+
+    <h2>2. Data We Access</h2>
+    <ul>
+      <li>
+        <strong>Telegram channel and group messages:</strong> Once signed in, the app reads
+        messages from the channels and groups you choose to add, solely to generate summaries.
+        Message content is stored locally on your device in an encrypted (SQLCipher) database.
+      </li>
+      <li>
+        <strong>API keys (optional):</strong> If you choose to use your own Google Gemini API
+        key instead of TeleBrief's built-in AI, that key is stored locally on your device using
+        Android's encrypted DataStore. It is never transmitted to our servers.
+      </li>
+      <li>
+        <strong>App preferences and summaries:</strong> Settings (such as selected channels,
+        filters, and summarization history) are stored locally on your device using Room database
+        and DataStore. This data does not leave your device.
+      </li>
+    </ul>
+
+    <h2>3. Data Sent to Third-Party AI Services</h2>
+    <p>
+      When a summary is generated — either manually or via the twice-daily scheduled brief —
+      the relevant channel/group messages are sent to:
+    </p>
+    <ul>
+      <li>
+        <strong>Google Gemini API</strong> (Gemini 2.5 Flash Lite) – operated by Google LLC,
+        either through TeleBrief's own server-side key pool (default) or your own key if you've
+        enabled BYOK mode. Subject to
+        <a href="https://policies.google.com/privacy" target="_blank">Google's Privacy Policy</a>
+        and <a href="https://ai.google.dev/terms" target="_blank">Gemini API Terms</a>.
+      </li>
+    </ul>
+    <p>
+      We do not control how Google processes data once received. We recommend reviewing their
+      privacy policy. Message content is sent only at the moment of summarization and is not
+      stored by us after the request completes.
+    </p>
+
+    <h2>4. Analytics and Crash Reporting</h2>
+    <p>
+      We use the following Firebase services (operated by Google LLC) to improve app stability
+      and understand usage patterns:
+    </p>
+    <ul>
+      <li>
+        <strong>Firebase Crashlytics:</strong> Automatically collects crash reports including
+        device model, OS version, and stack traces. No personally identifiable information or
+        message content is included in crash reports.
+      </li>
+      <li>
+        <strong>Firebase Analytics:</strong> Collects anonymized usage events (e.g., screens
+        viewed, features used). No message content is included.
+      </li>
+    </ul>
+    <p>
+      These services are subject to
+      <a href="https://policies.google.com/privacy" target="_blank">Google's Privacy Policy</a>.
+    </p>
+
+    <h2>5. Backend Infrastructure</h2>
+    <p>
+      TeleBrief uses <strong>Supabase</strong> for backend services — account/device management,
+      routing AI summarization requests through our server-side key pool, and subscription
+      status. Supabase is subject to its own
+      <a href="https://supabase.com/privacy" target="_blank">Privacy Policy</a>.
+      We do not store your Telegram message content on Supabase beyond the brief moment a
+      summarization request is in transit.
+    </p>
+
+    <h2>6. Subscriptions and Payments</h2>
+    <p>
+      If you choose to subscribe to a paid plan, payment is processed by
+      <strong>Razorpay</strong>. We store your plan type and subscription status; we do not
+      store your card or payment instrument details — those are handled entirely by Razorpay,
+      subject to its own
+      <a href="https://razorpay.com/privacy/" target="_blank">Privacy Policy</a>.
+    </p>
+
+    <h2>7. Data We Do Not Collect</h2>
+    <ul>
+      <li>We do not store your Telegram phone number, contacts, or account credentials on our servers.</li>
+      <li>We do not store your Telegram channel/group messages on our servers.</li>
+      <li>We do not sell, rent, or share your data with advertisers or data brokers.</li>
+      <li>We do not use your data to train AI models.</li>
+    </ul>
+
+    <h2>8. Data Retention</h2>
+    <p>
+      Messages, summaries, and preferences are stored locally on your device and remain under
+      your control. You can clear all app data at any time via Android Settings → Apps →
+      TeleBrief → Clear Data, or remove individual channels/groups from within the app. Logging
+      out of Telegram inside the app clears your local TDLib session. We do not retain your
+      message content beyond the duration of a single summarization request.
+    </p>
+
+    <h2>9. Children's Privacy</h2>
+    <p>
+      TeleBrief is not directed at children under the age of 13. We do not knowingly collect
+      personal information from children. If you believe a child has provided us with personal
+      information, please contact us so we can delete it.
+    </p>
+
+    <h2>10. Security</h2>
+    <p>
+      Your Telegram session is managed by TDLib over Telegram's own encrypted MTProto protocol.
+      API keys are stored using Android's encrypted DataStore. Messages and summaries are stored
+      in a SQLCipher-encrypted local database. We apply reasonable technical measures to protect
+      your data, though no method of transmission over the internet is 100% secure.
+    </p>
+
+    <h2>11. Changes to This Policy</h2>
+    <p>
+      We may update this Privacy Policy from time to time. When we do, we will update the
+      "Last updated" date at the top of this page. Continued use of the app after changes
+      constitutes acceptance of the updated policy.
+    </p>
+
+    <h2>12. Contact Us</h2>
+    <p>
+      If you have any questions or concerns about this Privacy Policy, please contact us at:<br />
+      <a href="mailto:chatbriefsupport@gmail.com">chatbriefsupport@gmail.com</a>
+    </p>
+
+    <hr />
+    <p class="meta" style="text-align:center;">© 2026 TeleBrief. All rights reserved.</p>
+
+  </body>
+  </html>
