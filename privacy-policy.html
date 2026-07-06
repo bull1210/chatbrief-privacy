@@ -26,7 +26,7 @@
 
     <h1>Privacy Policy</h1>
     <p class="meta">App: <strong>ChatBrief</strong> &nbsp;|&nbsp; Package: com.chatbrief.app &nbsp;|&nbsp; Last updated:
-   28 May 2026</p>
+   6 Jul 2026</p>
 
     <p>
       ChatBrief ("we", "our", or "the app") is a WhatsApp chat summarization tool that helps you
@@ -37,13 +37,23 @@
     <h2>1. Data We Access</h2>
     <ul>
       <li>
-        <strong>WhatsApp chat exports:</strong> You manually export chats from WhatsApp and
-        share them with ChatBrief. The app reads the text content of these exports solely to
-        generate a summary. Chat content is never stored permanently on our servers.
+        <strong>WhatsApp notifications (live groups):</strong> With your permission (Notification
+        Access), the app reads incoming WhatsApp notifications for groups you choose to add, to
+        detect new messages as they arrive. Groups you haven't added are only staged locally so you
+        can review and add them — nothing is summarized until you do.
       </li>
       <li>
-        <strong>API keys:</strong> If you choose to use your own AI provider key (Google Gemini
-        or Groq), that key is stored locally on your device using Android's encrypted
+        <strong>WhatsApp chat exports (manual import):</strong> You can also manually export chats
+        from WhatsApp and share them with ChatBrief. The app reads the text content of these exports
+        solely to generate a summary.
+      </li>
+      <li>
+        In both cases, message text is stored locally on your device in an encrypted (SQLCipher)
+        database and is never stored permanently on our servers.
+      </li>
+      <li>
+        <strong>API keys (optional):</strong> If you choose "Bring Your Own Key" mode with your own
+        Google AI Studio key, that key is stored locally on your device using Android's encrypted
         DataStore. It is never transmitted to our servers.
       </li>
       <li>
@@ -55,24 +65,29 @@
 
     <h2>2. Data Sent to Third-Party AI Services</h2>
     <p>
-      When you tap "Summarize", the selected chat messages are sent to one of the following
-      AI services to generate a summary:
+      When a summary is generated, the relevant chat messages are sent to:
     </p>
     <ul>
       <li>
-        <strong>Google Gemini API</strong> – operated by Google LLC.
-        Subject to <a href="https://policies.google.com/privacy" target="_blank">Google's Privacy Policy</a>
+        <strong>Google Gemini API</strong> (Gemini 2.5 Flash Lite) – operated by Google LLC,
+        either through ChatBrief's own server-side key pool (default) or your own key if you've
+        enabled BYOK mode. Subject to
+        <a href="https://policies.google.com/privacy" target="_blank">Google's Privacy Policy</a>
         and <a href="https://ai.google.dev/terms" target="_blank">Gemini API Terms</a>.
-      </li>
-      <li>
-        <strong>Groq API</strong> – operated by Groq, Inc.
-        Subject to <a href="https://groq.com/privacy-policy/" target="_blank">Groq's Privacy Policy</a>.
       </li>
     </ul>
     <p>
-      We do not control how these providers process data once received. We recommend reviewing
-      their respective policies. Chat content is sent only at the moment of summarization and
-      is not stored by us after the API call completes.
+      Free-trial and standard server-plan usage may be served using Google's free-tier API, for
+      which Google's terms permit use of prompt/response data to improve their products. Paid
+      subscription plans and BYOK with your own paid-tier key are served through Google's paid
+      tier, which Google does not use to train its models. We do not control how Google processes
+      data once received, and recommend reviewing its policies directly. Message content is sent
+      only at the moment of summarization and is not stored by us after the request completes.
+    </p>
+    <p>
+      Because group chats include messages from people other than you, please only add groups
+      where you're a legitimate participant and be mindful of the expectations of other members —
+      they have not individually consented to AI processing of their messages.
     </p>
 
     <h2>3. Analytics and Crash Reporting</h2>
@@ -98,52 +113,66 @@
 
     <h2>4. Backend Infrastructure</h2>
     <p>
-      ChatBrief uses <strong>Supabase</strong> for backend services (account management and
-      app health monitoring). Supabase is subject to its own
+      ChatBrief uses <strong>Supabase</strong> for backend services (device/subscription
+      management and routing AI summarization requests through our server-side key pool).
+      Supabase is subject to its own
       <a href="https://supabase.com/privacy" target="_blank">Privacy Policy</a>.
-      We do not store your chat content on Supabase.
+      We do not store your chat content on Supabase beyond the brief moment a summarization
+      request is in transit — server logs record only message counts, device identifiers, and
+      error codes, never message text.
     </p>
 
-    <h2>5. Data We Do Not Collect</h2>
+    <h2>5. Subscriptions and Payments</h2>
+    <p>
+      If you choose to subscribe to a paid plan, payment is processed by
+      <strong>Razorpay</strong>. We store your plan type and subscription status; we do not
+      store your card or payment instrument details — those are handled entirely by Razorpay,
+      subject to its own
+      <a href="https://razorpay.com/privacy/" target="_blank">Privacy Policy</a>.
+    </p>
+
+    <h2>6. Data We Do Not Collect</h2>
     <ul>
-      <li>We do not collect your name, phone number, or WhatsApp account details.</li>
+      <li>We do not collect your WhatsApp account credentials.</li>
       <li>We do not store your chat messages on our servers.</li>
       <li>We do not sell, rent, or share your data with advertisers or data brokers.</li>
-      <li>We do not use your data to train AI models.</li>
+      <li>We do not use paid-tier or BYOK requests to train AI models. Free-tier requests may be
+      used by Google to improve its models, per Google's own terms — see Section 2.</li>
     </ul>
 
-    <h2>6. Data Retention</h2>
+    <h2>7. Data Retention</h2>
     <p>
-      Summaries and preferences are stored locally on your device and remain under your control.
-      You can clear all app data at any time via Android Settings → Apps → ChatBrief → Clear Data.
-      We do not retain your chat content beyond the duration of a single summarization request.
+      Messages, summaries, and preferences are stored locally on your device and remain under
+      your control. You can clear all app data at any time via Settings → Delete All Data, or via
+      Android Settings → Apps → ChatBrief → Clear Data. We do not retain your chat content on our
+      servers beyond the duration of a single summarization request.
     </p>
 
-    <h2>7. Children's Privacy</h2>
+    <h2>8. Children's Privacy</h2>
     <p>
       ChatBrief is not directed at children under the age of 13. We do not knowingly collect
       personal information from children. If you believe a child has provided us with personal
       information, please contact us so we can delete it.
     </p>
 
-    <h2>8. Security</h2>
+    <h2>9. Security</h2>
     <p>
-      API keys are stored using Android's encrypted DataStore. Summaries are stored in a
-      SQLCipher-encrypted local database. We apply reasonable technical measures to protect
+      API keys are stored using Android's encrypted DataStore. Messages and summaries are stored
+      in a SQLCipher-encrypted local database. We apply reasonable technical measures to protect
       your data, though no method of transmission over the internet is 100% secure.
     </p>
 
-    <h2>9. Changes to This Policy</h2>
+    <h2>10. Changes to This Policy</h2>
     <p>
       We may update this Privacy Policy from time to time. When we do, we will update the
       "Last updated" date at the top of this page. Continued use of the app after changes
       constitutes acceptance of the updated policy.
     </p>
 
-    <h2>10. Contact Us</h2>
+    <h2>11. Contact Us</h2>
     <p>
       If you have any questions or concerns about this Privacy Policy, please contact us at:<br />
-      <a href="mailto:mmk_1210@yahoo.com">mmk_1210@yahoo.com</a>
+      <a href="mailto:chatbriefsupport@gmail.com">chatbriefsupport@gmail.com</a>
     </p>
 
     <hr />

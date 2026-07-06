@@ -26,7 +26,7 @@
 
     <h1>Privacy Policy</h1>
     <p class="meta">App: <strong>TeleBrief</strong> &nbsp;|&nbsp; Package: com.telebrief.app &nbsp;|&nbsp; Last updated:
-   04 Jul 2026</p>
+   06 Jul 2026</p>
 
     <p>
       TeleBrief ("we", "our", or "the app") is a Telegram channel and group summarization tool
@@ -87,9 +87,17 @@
       </li>
     </ul>
     <p>
-      We do not control how Google processes data once received. We recommend reviewing their
-      privacy policy. Message content is sent only at the moment of summarization and is not
-      stored by us after the request completes.
+      Free-trial and standard server-plan usage may be served using Google's free-tier API, for
+      which Google's terms permit use of prompt/response data to improve their products. Paid
+      subscription plans and BYOK with your own paid-tier key are served through Google's paid
+      tier, which Google does not use to train its models. We do not control how Google processes
+      data once received, and recommend reviewing its policies directly. Message content is sent
+      only at the moment of summarization and is not stored by us after the request completes.
+    </p>
+    <p>
+      Because channels and groups include messages from people other than you, please only add
+      channels/groups where you're a legitimate participant and be mindful of the expectations of
+      other members — they have not individually consented to AI processing of their messages.
     </p>
 
     <h2>4. Analytics and Crash Reporting</h2>
@@ -137,7 +145,8 @@
       <li>We do not store your Telegram phone number, contacts, or account credentials on our servers.</li>
       <li>We do not store your Telegram channel/group messages on our servers.</li>
       <li>We do not sell, rent, or share your data with advertisers or data brokers.</li>
-      <li>We do not use your data to train AI models.</li>
+      <li>We do not use paid-tier or BYOK requests to train AI models. Free-tier requests may be
+      used by Google to improve its models, per Google's own terms — see Section 3.</li>
     </ul>
 
     <h2>8. Data Retention</h2>
@@ -145,8 +154,11 @@
       Messages, summaries, and preferences are stored locally on your device and remain under
       your control. You can clear all app data at any time via Android Settings → Apps →
       TeleBrief → Clear Data, or remove individual channels/groups from within the app. Logging
-      out of Telegram inside the app clears your local TDLib session. We do not retain your
-      message content beyond the duration of a single summarization request.
+      out of Telegram inside the app clears your local TDLib session. Every scheduled digest run
+      also automatically deletes messages older than 10 days from your device, whether or not
+      they were summarized — summaries themselves are kept until you delete them or clear app
+      data. We do not retain your message content on our servers beyond the duration of a single
+      summarization request.
     </p>
 
     <h2>9. Children's Privacy</h2>
